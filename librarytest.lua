@@ -1160,3 +1160,374 @@ function Extasy:CreateWindow(config)
 end
 
 return Extasy
+
+-- ==========================================
+-- AUTO-EXECUTE EXAMPLE
+-- ==========================================
+
+-- Créer la fenêtre
+local Window = Extasy:CreateWindow({
+    Name = "3xt4sy Demo",
+    Theme = "Dark",
+    LoadingEnabled = true,
+    MinimizeKey = Enum.KeyCode.RightControl
+})
+
+-- Notification de bienvenue
+Window:Notify({
+    Title = "Bienvenue !",
+    Content = "3xt4sy chargé avec succès !",
+    Duration = 5,
+    Type = "Success"
+})
+
+-- ===========================
+-- ONGLET PRINCIPAL
+-- ===========================
+local MainTab = Window:CreateTab({
+    Name = "Principal",
+    Icon = "🏠"
+})
+
+MainTab:CreateLabel("━━ Exemples de boutons ━━")
+
+MainTab:CreateButton({
+    Name = "🎮 Notification Info",
+    Callback = function()
+        Window:Notify({
+            Title = "Information",
+            Content = "Ceci est une notification de type Info",
+            Duration = 3,
+            Type = "Info"
+        })
+    end
+})
+
+MainTab:CreateButton({
+    Name = "✅ Notification Success",
+    Callback = function()
+        Window:Notify({
+            Title = "Succès",
+            Content = "Action réalisée avec succès !",
+            Duration = 3,
+            Type = "Success"
+        })
+    end
+})
+
+MainTab:CreateButton({
+    Name = "⚠️ Notification Warning",
+    Callback = function()
+        Window:Notify({
+            Title = "Attention",
+            Content = "Ceci est un avertissement",
+            Duration = 3,
+            Type = "Warning"
+        })
+    end
+})
+
+MainTab:CreateButton({
+    Name = "❌ Notification Error",
+    Callback = function()
+        Window:Notify({
+            Title = "Erreur",
+            Content = "Une erreur s'est produite !",
+            Duration = 3,
+            Type = "Error"
+        })
+    end
+})
+
+MainTab:CreateLabel("━━ Toggles ━━")
+
+MainTab:CreateToggle({
+    Name = "⚡ Speed Boost",
+    Default = false,
+    Callback = function(value)
+        local player = game.Players.LocalPlayer
+        if player.Character and player.Character:FindFirstChild("Humanoid") then
+            if value then
+                player.Character.Humanoid.WalkSpeed = 100
+                Window:Notify({Title = "Speed", Content = "Activé !", Duration = 2, Type = "Success"})
+            else
+                player.Character.Humanoid.WalkSpeed = 16
+                Window:Notify({Title = "Speed", Content = "Désactivé", Duration = 2, Type = "Info"})
+            end
+        end
+    end
+})
+
+MainTab:CreateToggle({
+    Name = "🦘 Jump Boost",
+    Default = false,
+    Callback = function(value)
+        local player = game.Players.LocalPlayer
+        if player.Character and player.Character:FindFirstChild("Humanoid") then
+            if value then
+                player.Character.Humanoid.JumpPower = 100
+                Window:Notify({Title = "Jump", Content = "Boost activé !", Duration = 2, Type = "Success"})
+            else
+                player.Character.Humanoid.JumpPower = 50
+                Window:Notify({Title = "Jump", Content = "Normal", Duration = 2, Type = "Info"})
+            end
+        end
+    end
+})
+
+MainTab:CreateLabel("━━ Sliders ━━")
+
+MainTab:CreateSlider({
+    Name = "📷 Field of View",
+    Min = 70,
+    Max = 120,
+    Default = 70,
+    Callback = function(value)
+        game.Workspace.CurrentCamera.FieldOfView = value
+    end
+})
+
+MainTab:CreateSlider({
+    Name = "🚶 WalkSpeed",
+    Min = 16,
+    Max = 200,
+    Default = 16,
+    Callback = function(value)
+        local player = game.Players.LocalPlayer
+        if player.Character and player.Character:FindFirstChild("Humanoid") then
+            player.Character.Humanoid.WalkSpeed = value
+        end
+    end
+})
+
+MainTab:CreateLabel("━━ Dropdown ━━")
+
+MainTab:CreateDropdown({
+    Name = "🎨 Choix",
+    Options = {"Option 1", "Option 2", "Option 3", "Option 4"},
+    Default = "Option 1",
+    Callback = function(option)
+        Window:Notify({
+            Title = "Dropdown",
+            Content = "Sélectionné : " .. option,
+            Duration = 2,
+            Type = "Info"
+        })
+    end
+})
+
+-- ===========================
+-- ONGLET PLAYER
+-- ===========================
+local PlayerTab = Window:CreateTab({
+    Name = "Joueur",
+    Icon = "👤"
+})
+
+PlayerTab:CreateLabel("━━ Contrôles du joueur ━━")
+
+PlayerTab:CreateButton({
+    Name = "🦘 Jump Power (50)",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        if player.Character and player.Character:FindFirstChild("Humanoid") then
+            player.Character.Humanoid.JumpPower = 50
+            player.Character.Humanoid.JumpHeight = 50
+            Window:Notify({
+                Title = "Jump Power",
+                Content = "Force de saut modifiée !",
+                Duration = 2,
+                Type = "Success"
+            })
+        end
+    end
+})
+
+PlayerTab:CreateButton({
+    Name = "🔄 Reset Jump",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        if player.Character and player.Character:FindFirstChild("Humanoid") then
+            player.Character.Humanoid.JumpPower = 7.2
+            player.Character.Humanoid.JumpHeight = 7.2
+            Window:Notify({
+                Title = "Jump Reset",
+                Content = "Saut normal restauré",
+                Duration = 2,
+                Type = "Info"
+            })
+        end
+    end
+})
+
+PlayerTab:CreateLabel("━━━━━━━━━━━━━━━━━━━━")
+
+PlayerTab:CreateButton({
+    Name = "💚 Full Health",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        if player.Character and player.Character:FindFirstChild("Humanoid") then
+            player.Character.Humanoid.Health = player.Character.Humanoid.MaxHealth
+            Window:Notify({
+                Title = "Santé",
+                Content = "Santé restaurée au maximum !",
+                Duration = 2,
+                Type = "Success"
+            })
+        end
+    end
+})
+
+PlayerTab:CreateButton({
+    Name = "🔁 Respawn",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        if player.Character then
+            player.Character.Humanoid.Health = 0
+            Window:Notify({
+                Title = "Respawn",
+                Content = "Respawn en cours...",
+                Duration = 2,
+                Type = "Info"
+            })
+        end
+    end
+})
+
+-- ===========================
+-- ONGLET CAMERA
+-- ===========================
+local CameraTab = Window:CreateTab({
+    Name = "Caméra",
+    Icon = "📷"
+})
+
+CameraTab:CreateLabel("━━ Paramètres de caméra ━━")
+
+CameraTab:CreateButton({
+    Name = "🔭 FOV 120",
+    Callback = function()
+        game.Workspace.CurrentCamera.FieldOfView = 120
+        Window:Notify({
+            Title = "FOV",
+            Content = "FOV réglé sur 120",
+            Duration = 2,
+            Type = "Success"
+        })
+    end
+})
+
+CameraTab:CreateButton({
+    Name = "📷 FOV 90",
+    Callback = function()
+        game.Workspace.CurrentCamera.FieldOfView = 90
+        Window:Notify({
+            Title = "FOV",
+            Content = "FOV réglé sur 90",
+            Duration = 2,
+            Type = "Info"
+        })
+    end
+})
+
+CameraTab:CreateButton({
+    Name = "🔄 FOV Default (70)",
+    Callback = function()
+        game.Workspace.CurrentCamera.FieldOfView = 70
+        Window:Notify({
+            Title = "FOV",
+            Content = "FOV par défaut restauré",
+            Duration = 2,
+            Type = "Info"
+        })
+    end
+})
+
+-- ===========================
+-- ONGLET SETTINGS (THÈMES)
+-- ===========================
+local SettingsTab = Window:CreateTab({
+    Name = "Paramètres",
+    Icon = "⚙️"
+})
+
+SettingsTab:CreateLabel("━━ Thèmes disponibles ━━")
+SettingsTab:CreateLabel("Choisissez votre thème préféré :")
+
+SettingsTab:CreateButton({
+    Name = "🌙 Thème Dark",
+    Callback = function()
+        Window:SetTheme("Dark")
+    end
+})
+
+SettingsTab:CreateButton({
+    Name = "☀️ Thème Light",
+    Callback = function()
+        Window:SetTheme("Light")
+    end
+})
+
+SettingsTab:CreateButton({
+    Name = "✨ Thème Neon",
+    Callback = function()
+        Window:SetTheme("Neon")
+    end
+})
+
+SettingsTab:CreateLabel("━━━━━━━━━━━━━━━━━━━━")
+SettingsTab:CreateLabel("💡 Astuce : Appuyez sur RightControl")
+SettingsTab:CreateLabel("pour minimiser/maximiser l'UI")
+
+-- ===========================
+-- ONGLET INFO
+-- ===========================
+local InfoTab = Window:CreateTab({
+    Name = "Info",
+    Icon = "ℹ️"
+})
+
+InfoTab:CreateLabel("━━━━━━━━━━━━━━━━━━━━")
+InfoTab:CreateLabel("📋 3xt4sy UI Library v1.0.0")
+InfoTab:CreateLabel("━━━━━━━━━━━━━━━━━━━━")
+InfoTab:CreateLabel("")
+InfoTab:CreateLabel("✨ Fonctionnalités :")
+InfoTab:CreateLabel("• Interface moderne glassmorphic")
+InfoTab:CreateLabel("• 3 thèmes (Dark/Light/Neon)")
+InfoTab:CreateLabel("• Animations fluides")
+InfoTab:CreateLabel("• Fenêtre draggable")
+InfoTab:CreateLabel("• Système de notifications")
+InfoTab:CreateLabel("• Composants multiples")
+InfoTab:CreateLabel("")
+InfoTab:CreateLabel("━━━━━━━━━━━━━━━━━━━━")
+
+InfoTab:CreateButton({
+    Name = "🔄 Recharger l'UI",
+    Callback = function()
+        Window:Notify({
+            Title = "Rechargement",
+            Content = "Fermez et ré-exécutez le script",
+            Duration = 3,
+            Type = "Info"
+        })
+    end
+})
+
+InfoTab:CreateButton({
+    Name = "❌ Fermer l'UI",
+    Callback = function()
+        Window:Notify({
+            Title = "Fermeture",
+            Content = "L'UI va se fermer dans 2 secondes...",
+            Duration = 2,
+            Type = "Warning"
+        })
+        wait(2)
+        game:GetService("CoreGui").Extasy:Destroy()
+    end
+})
+
+-- Message final
+print("━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+print("✅ 3xt4sy chargé avec succès !")
+print("━━━━━━━━━━━━━━━━━━━━━━━━━━━")
