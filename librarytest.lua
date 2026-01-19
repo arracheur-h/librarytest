@@ -1,10 +1,10 @@
 --[[
-    ███╗   ██╗███████╗██╗  ██╗██╗   ██╗███████╗    ██╗   ██╗██╗
-    ████╗  ██║██╔════╝╚██╗██╔╝██║   ██║██╔════╝    ██║   ██║██║
-    ██╔██╗ ██║█████╗   ╚███╔╝ ██║   ██║███████╗    ██║   ██║██║
-    ██║╚██╗██║██╔══╝   ██╔██╗ ██║   ██║╚════██║    ██║   ██║██║
-    ██║ ╚████║███████╗██╔╝ ██╗╚██████╔╝███████║    ╚██████╔╝██║
-    ╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝     ╚═════╝ ╚═╝
+    ██████╗ ██╗  ██╗████████╗██╗  ██╗███████╗██╗   ██╗
+    ╚════██╗╚██╗██╔╝╚══██╔══╝██║  ██║██╔════╝╚██╗ ██╔╝
+     █████╔╝ ╚███╔╝    ██║   ███████║███████╗ ╚████╔╝ 
+     ╚═══██╗ ██╔██╗    ██║   ╚════██║╚════██║  ╚██╔╝  
+    ██████╔╝██╔╝ ██╗   ██║        ██║███████║   ██║   
+    ╚═════╝ ╚═╝  ╚═╝   ╚═╝        ╚═╝╚══════╝   ╚═╝   
     
     Modern UI Library for Roblox
     Version: 1.0.0
@@ -18,7 +18,7 @@
     - Notifications system
 ]]
 
-local NexusUI = {}
+local Extasy = {}
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
@@ -125,7 +125,7 @@ local Themes = {
 }
 
 -- Main Library
-function NexusUI:CreateWindow(config)
+function Extasy:CreateWindow(config)
     config = config or {}
     local WindowName = config.Name or "Nexus UI"
     local Theme = Themes[config.Theme or "Dark"]
@@ -140,7 +140,7 @@ function NexusUI:CreateWindow(config)
     
     -- Create ScreenGui
     local ScreenGui = CreateInstance("ScreenGui", {
-        Name = "NexusUI",
+        Name = "Extasy",
         Parent = CoreGui,
         ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
         ResetOnSpawn = false,
@@ -344,9 +344,13 @@ function NexusUI:CreateWindow(config)
         if Window.Minimized then
             Tween(MainFrame, {Size = UDim2.new(0, 600, 0, 50)}, 0.3)
             MinimizeButton.Text = "+"
+            TabsContainer.Visible = false
+            ContentContainer.Visible = false
         else
             Tween(MainFrame, {Size = UDim2.new(0, 600, 0, 450)}, 0.3)
             MinimizeButton.Text = "−"
+            TabsContainer.Visible = true
+            ContentContainer.Visible = true
         end
     end
     
@@ -1195,4 +1199,4 @@ function NexusUI:CreateWindow(config)
     return Window
 end
 
-return NexusUI
+return Extasy
