@@ -1200,3 +1200,286 @@ function Extasy:CreateWindow(config)
 end
 
 return Extasy
+
+-- AUTO-EXECUTION
+local Extasy = loadstring(game:HttpGet("URL_TO_YOUR_SCRIPT"))()
+
+-- Créer une fenêtre
+local Window = Extasy:CreateWindow({
+    Name = "3xt4sy - Demo",
+    Theme = "Dark", -- "Dark", "Light", ou "Neon"
+    LoadingEnabled = true,
+    MinimizeKey = Enum.KeyCode.RightControl
+})
+
+-- Créer des notifications
+Window:Notify({
+    Title = "Bienvenue !",
+    Content = "3xt4sy chargé avec succès",
+    Duration = 5,
+    Type = "Success" -- "Info", "Success", "Warning", "Error"
+})
+
+-- Créer le premier onglet - Main
+local MainTab = Window:CreateTab({
+    Name = "Principal",
+    Icon = "🏠"
+})
+
+-- Bouton simple
+MainTab:CreateButton({
+    Name = "Cliquez-moi",
+    Callback = function()
+        Window:Notify({
+            Title = "Bouton cliqué",
+            Content = "Vous avez cliqué sur le bouton !",
+            Duration = 3,
+            Type = "Info"
+        })
+    end
+})
+
+-- Toggle (interrupteur)
+local SpeedToggle = MainTab:CreateToggle({
+    Name = "Speed Boost",
+    Default = false,
+    Callback = function(value)
+        if value then
+            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 100
+            Window:Notify({
+                Title = "Speed activé",
+                Content = "Vitesse augmentée !",
+                Duration = 2,
+                Type = "Success"
+            })
+        else
+            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+            Window:Notify({
+                Title = "Speed désactivé",
+                Content = "Vitesse normale",
+                Duration = 2,
+                Type = "Info"
+            })
+        end
+    end
+})
+
+-- Slider (curseur)
+local FOVSlider = MainTab:CreateSlider({
+    Name = "Field of View",
+    Min = 70,
+    Max = 120,
+    Default = 70,
+    Increment = 1,
+    Callback = function(value)
+        game.Workspace.CurrentCamera.FieldOfView = value
+    end
+})
+
+-- Créer le deuxième onglet - Combat
+local CombatTab = Window:CreateTab({
+    Name = "Combat",
+    Icon = "⚔️"
+})
+
+-- Dropdown (menu déroulant)
+local WeaponDropdown = CombatTab:CreateDropdown({
+    Name = "Sélectionner une arme",
+    Options = {"Épée", "Arc", "Hache", "Lance"},
+    Default = "Épée",
+    Callback = function(option)
+        Window:Notify({
+            Title = "Arme changée",
+            Content = "Vous avez sélectionné : " .. option,
+            Duration = 3,
+            Type = "Info"
+        })
+    end
+})
+
+-- Toggle pour l'aimbot
+CombatTab:CreateToggle({
+    Name = "Aimbot",
+    Default = false,
+    Callback = function(value)
+        if value then
+            Window:Notify({
+                Title = "Aimbot activé",
+                Content = "Attention à ne pas vous faire ban !",
+                Duration = 3,
+                Type = "Warning"
+            })
+        else
+            Window:Notify({
+                Title = "Aimbot désactivé",
+                Content = "Mode de jeu normal",
+                Duration = 2,
+                Type = "Info"
+            })
+        end
+    end
+})
+
+-- Label informatif
+CombatTab:CreateLabel("⚠️ Utilisez ces fonctions à vos risques et périls")
+
+-- Créer le troisième onglet - Paramètres
+local SettingsTab = Window:CreateTab({
+    Name = "Paramètres",
+    Icon = "⚙️"
+})
+
+-- Input (champ de texte)
+SettingsTab:CreateInput({
+    Name = "Nom du joueur",
+    Placeholder = "Entrez un nom...",
+    Callback = function(text)
+        Window:Notify({
+            Title = "Nom sauvegardé",
+            Content = "Votre nom : " .. text,
+            Duration = 3,
+            Type = "Success"
+        })
+    end
+})
+
+-- Slider pour le volume
+SettingsTab:CreateSlider({
+    Name = "Volume musique",
+    Min = 0,
+    Max = 100,
+    Default = 50,
+    Increment = 5,
+    Callback = function(value)
+        print("Volume réglé sur : " .. value .. "%")
+    end
+})
+
+-- Toggle pour le mode nuit
+SettingsTab:CreateToggle({
+    Name = "Mode nuit",
+    Default = true,
+    Callback = function(value)
+        if value then
+            game.Lighting.ClockTime = 0
+            game.Lighting.Brightness = 1
+        else
+            game.Lighting.ClockTime = 12
+            game.Lighting.Brightness = 2
+        end
+    end
+})
+
+SettingsTab:CreateLabel("━━━━━━━━━━━━━━━━━━━━")
+
+-- Bouton pour détruire l'UI
+SettingsTab:CreateButton({
+    Name = "Fermer l'UI",
+    Callback = function()
+        Window:Notify({
+            Title = "Au revoir !",
+            Content = "L'UI va se fermer dans 2 secondes...",
+            Duration = 2,
+            Type = "Error"
+        })
+        wait(2)
+        game:GetService("CoreGui").Extasy:Destroy()
+    end
+})
+
+-- Créer un quatrième onglet - Info
+local InfoTab = Window:CreateTab({
+    Name = "Infos",
+    Icon = "ℹ️"
+})
+
+InfoTab:CreateLabel("📋 3xt4sy Library v1.0.0")
+InfoTab:CreateLabel("━━━━━━━━━━━━━━━━━━━━")
+InfoTab:CreateLabel("Fonctionnalités :")
+InfoTab:CreateLabel("✓ Interface moderne et élégante")
+InfoTab:CreateLabel("✓ Animations fluides")
+InfoTab:CreateLabel("✓ Système de notifications")
+InfoTab:CreateLabel("✓ Multiple thèmes disponibles")
+InfoTab:CreateLabel("✓ Fenêtre déplaçable")
+InfoTab:CreateLabel("✓ Support de minimisation")
+InfoTab:CreateLabel("━━━━━━━━━━━━━━━━━━━━")
+
+-- Bouton pour tester les notifications
+InfoTab:CreateButton({
+    Name = "Test notification Info",
+    Callback = function()
+        Window:Notify({
+            Title = "Information",
+            Content = "Ceci est une notification de type Info",
+            Duration = 3,
+            Type = "Info"
+        })
+    end
+})
+
+InfoTab:CreateButton({
+    Name = "Test notification Success",
+    Callback = function()
+        Window:Notify({
+            Title = "Succès",
+            Content = "Ceci est une notification de type Success",
+            Duration = 3,
+            Type = "Success"
+        })
+    end
+})
+
+InfoTab:CreateButton({
+    Name = "Test notification Warning",
+    Callback = function()
+        Window:Notify({
+            Title = "Avertissement",
+            Content = "Ceci est une notification de type Warning",
+            Duration = 3,
+            Type = "Warning"
+        })
+    end
+})
+
+InfoTab:CreateButton({
+    Name = "Test notification Error",
+    Callback = function()
+        Window:Notify({
+            Title = "Erreur",
+            Content = "Ceci est une notification de type Error",
+            Duration = 3,
+            Type = "Error"
+        })
+    end
+})
+
+-- Exemples d'utilisation avancée
+--[[
+
+    CHANGER LA VALEUR D'UN TOGGLE DEPUIS LE CODE :
+    SpeedToggle:Set(true)  -- Active le toggle
+    SpeedToggle:Set(false) -- Désactive le toggle
+
+    CHANGER LA VALEUR D'UN SLIDER :
+    FOVSlider:Set(100) -- Met le FOV à 100
+
+    CHANGER LA VALEUR D'UN DROPDOWN :
+    WeaponDropdown:Set("Arc") -- Sélectionne "Arc"
+    
+    CHANGER LE TEXTE D'UN LABEL :
+    (Sauvegardez le label dans une variable d'abord)
+    local MyLabel = InfoTab:CreateLabel("Texte initial")
+    MyLabel:Set("Nouveau texte")
+
+    MINIMISER/MAXIMISER LA FENÊTRE :
+    Appuyez sur la touche RightControl (ou la touche configurée)
+    
+    CRÉER UNE FENÊTRE AVEC UN THÈME DIFFÉRENT :
+    local Window = Extasy:CreateWindow({
+        Name = "Ma fenêtre",
+        Theme = "Neon", -- "Dark", "Light", ou "Neon"
+        LoadingEnabled = true,
+        MinimizeKey = Enum.KeyCode.RightShift
+    })
+
+]]
