@@ -404,12 +404,12 @@ function Extasy:CreateWindow(config)
         
         Tween(LoadingBar, {Size = UDim2.new(0, 200, 0, 4)}, 1.5, Enum.EasingStyle.Quad)
         wait(1.5)
+        
+        -- Properly fade out all loading elements
         Tween(LoadingFrame, {BackgroundTransparency = 1}, 0.3)
-        for _, child in pairs(LoadingFrame:GetChildren()) do
-            if child:IsA("GuiObject") then
-                Tween(child, {BackgroundTransparency = 1, TextTransparency = 1}, 0.3)
-            end
-        end
+        Tween(LoadingText, {TextTransparency = 1}, 0.3)
+        Tween(LoadingBar, {BackgroundTransparency = 1}, 0.3)
+        
         wait(0.3)
         LoadingFrame:Destroy()
     end
