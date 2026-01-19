@@ -512,7 +512,14 @@ function Extasy:CreateWindow(config)
         table.insert(Window.Tabs, Tab)
         
         if #Window.Tabs == 1 then
-            TabButton.MouseButton1Click:Fire()
+            -- Auto-select first tab without using Fire()
+            for _, tab in pairs(Window.Tabs) do
+                tab.Content.Visible = false
+                Tween(tab.Button, {BackgroundTransparency = 0.7}, 0.2)
+            end
+            TabContent.Visible = true
+            Tween(TabButton, {BackgroundTransparency = 0.3}, 0.2)
+            Window.CurrentTab = Tab
         end
         
         function Tab:CreateButton(config)
