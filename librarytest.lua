@@ -149,12 +149,17 @@ function NexusUI:CreateWindow(config)
     -- Main Frame (Window Container)
     local MainFrame = CreateInstance("Frame", {
         Name = "MainFrame",
-        Size = UDim2.new(0, 600, 0, 450),
+        Size = UDim2.new(0, 0, 0, 0),
         Position = UDim2.new(0.5, -300, 0.5, -225),
         BackgroundColor3 = Theme.Background,
         BorderSizePixel = 0,
         Parent = ScreenGui,
     })
+    
+    -- Animation d'ouverture
+    if not LoadingEnabled then
+        Tween(MainFrame, {Size = UDim2.new(0, 600, 0, 450)}, 0.5, Enum.EasingStyle.Back)
+    end
     
     CreateInstance("UICorner", {
         CornerRadius = UDim.new(0, 12),
@@ -402,6 +407,7 @@ function NexusUI:CreateWindow(config)
         end
         wait(0.3)
         LoadingFrame:Destroy()
+        Tween(MainFrame, {Size = UDim2.new(0, 600, 0, 450)}, 0.5, Enum.EasingStyle.Back)
     end
     
     -- Create Tab
