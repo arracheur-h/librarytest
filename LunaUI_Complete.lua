@@ -132,6 +132,136 @@ local Themes = {
         Success = Color3.fromRGB(34, 197, 94),
         Warning = Color3.fromRGB(251, 191, 36),
         Error = Color3.fromRGB(239, 68, 68),
+    },
+    Sunset = {
+        Primary = Color3.fromRGB(251, 146, 60),
+        Background = Color3.fromRGB(30, 20, 40),
+        Sidebar = Color3.fromRGB(45, 30, 55),
+        Surface = Color3.fromRGB(55, 35, 65),
+        Hover = Color3.fromRGB(65, 45, 75),
+        Text = Color3.fromRGB(254, 243, 199),
+        TextDim = Color3.fromRGB(253, 186, 116),
+        Accent = Color3.fromRGB(249, 115, 22),
+        Success = Color3.fromRGB(132, 204, 22),
+        Warning = Color3.fromRGB(234, 179, 8),
+        Error = Color3.fromRGB(220, 38, 38),
+    },
+    Forest = {
+        Primary = Color3.fromRGB(34, 197, 94),
+        Background = Color3.fromRGB(20, 30, 25),
+        Sidebar = Color3.fromRGB(30, 45, 35),
+        Surface = Color3.fromRGB(35, 50, 40),
+        Hover = Color3.fromRGB(45, 60, 50),
+        Text = Color3.fromRGB(236, 253, 245),
+        TextDim = Color3.fromRGB(167, 243, 208),
+        Accent = Color3.fromRGB(22, 163, 74),
+        Success = Color3.fromRGB(74, 222, 128),
+        Warning = Color3.fromRGB(250, 204, 21),
+        Error = Color3.fromRGB(239, 68, 68),
+    },
+    Tokyo = {
+        Primary = Color3.fromRGB(236, 72, 153),
+        Background = Color3.fromRGB(24, 24, 27),
+        Sidebar = Color3.fromRGB(35, 35, 40),
+        Surface = Color3.fromRGB(39, 39, 42),
+        Hover = Color3.fromRGB(50, 50, 55),
+        Text = Color3.fromRGB(250, 250, 250),
+        TextDim = Color3.fromRGB(161, 161, 170),
+        Accent = Color3.fromRGB(219, 39, 119),
+        Success = Color3.fromRGB(34, 197, 94),
+        Warning = Color3.fromRGB(251, 191, 36),
+        Error = Color3.fromRGB(239, 68, 68),
+    },
+    Nord = {
+        Primary = Color3.fromRGB(136, 192, 208),
+        Background = Color3.fromRGB(46, 52, 64),
+        Sidebar = Color3.fromRGB(55, 62, 76),
+        Surface = Color3.fromRGB(59, 66, 82),
+        Hover = Color3.fromRGB(67, 76, 94),
+        Text = Color3.fromRGB(236, 239, 244),
+        TextDim = Color3.fromRGB(216, 222, 233),
+        Accent = Color3.fromRGB(129, 161, 193),
+        Success = Color3.fromRGB(163, 190, 140),
+        Warning = Color3.fromRGB(235, 203, 139),
+        Error = Color3.fromRGB(191, 97, 106),
+    },
+    Dracula = {
+        Primary = Color3.fromRGB(189, 147, 249),
+        Background = Color3.fromRGB(40, 42, 54),
+        Sidebar = Color3.fromRGB(50, 53, 66),
+        Surface = Color3.fromRGB(68, 71, 90),
+        Hover = Color3.fromRGB(80, 84, 105),
+        Text = Color3.fromRGB(248, 248, 242),
+        TextDim = Color3.fromRGB(98, 114, 164),
+        Accent = Color3.fromRGB(255, 121, 198),
+        Success = Color3.fromRGB(80, 250, 123),
+        Warning = Color3.fromRGB(241, 250, 140),
+        Error = Color3.fromRGB(255, 85, 85),
+    },
+    Monokai = {
+        Primary = Color3.fromRGB(249, 38, 114),
+        Background = Color3.fromRGB(39, 40, 34),
+        Sidebar = Color3.fromRGB(50, 51, 45),
+        Surface = Color3.fromRGB(73, 72, 62),
+        Hover = Color3.fromRGB(90, 89, 75),
+        Text = Color3.fromRGB(248, 248, 240),
+        TextDim = Color3.fromRGB(117, 113, 94),
+        Accent = Color3.fromRGB(174, 129, 255),
+        Success = Color3.fromRGB(166, 226, 46),
+        Warning = Color3.fromRGB(230, 219, 116),
+        Error = Color3.fromRGB(249, 38, 114),
+    },
+    Gruvbox = {
+        Primary = Color3.fromRGB(251, 73, 52),
+        Background = Color3.fromRGB(40, 40, 40),
+        Sidebar = Color3.fromRGB(50, 48, 47),
+        Surface = Color3.fromRGB(60, 56, 54),
+        Hover = Color3.fromRGB(80, 73, 69),
+        Text = Color3.fromRGB(235, 219, 178),
+        TextDim = Color3.fromRGB(168, 153, 132),
+        Accent = Color3.fromRGB(250, 189, 47),
+        Success = Color3.fromRGB(184, 187, 38),
+        Warning = Color3.fromRGB(250, 189, 47),
+        Error = Color3.fromRGB(251, 73, 52),
+    },
+    Matrix = {
+        Primary = Color3.fromRGB(0, 255, 65),
+        Background = Color3.fromRGB(0, 0, 0),
+        Sidebar = Color3.fromRGB(5, 10, 5),
+        Surface = Color3.fromRGB(10, 20, 10),
+        Hover = Color3.fromRGB(15, 30, 15),
+        Text = Color3.fromRGB(0, 255, 65),
+        TextDim = Color3.fromRGB(0, 180, 45),
+        Accent = Color3.fromRGB(0, 200, 50),
+        Success = Color3.fromRGB(0, 255, 100),
+        Warning = Color3.fromRGB(200, 255, 0),
+        Error = Color3.fromRGB(255, 50, 50),
+    },
+    Crimson = {
+        Primary = Color3.fromRGB(220, 20, 60),
+        Background = Color3.fromRGB(25, 10, 15),
+        Sidebar = Color3.fromRGB(35, 15, 22),
+        Surface = Color3.fromRGB(45, 20, 30),
+        Hover = Color3.fromRGB(60, 30, 40),
+        Text = Color3.fromRGB(255, 240, 245),
+        TextDim = Color3.fromRGB(200, 150, 170),
+        Accent = Color3.fromRGB(178, 34, 34),
+        Success = Color3.fromRGB(34, 197, 94),
+        Warning = Color3.fromRGB(255, 165, 0),
+        Error = Color3.fromRGB(220, 20, 60),
+    },
+    Royal = {
+        Primary = Color3.fromRGB(75, 0, 130),
+        Background = Color3.fromRGB(25, 15, 35),
+        Sidebar = Color3.fromRGB(35, 20, 48),
+        Surface = Color3.fromRGB(45, 30, 60),
+        Hover = Color3.fromRGB(60, 40, 75),
+        Text = Color3.fromRGB(230, 220, 250),
+        TextDim = Color3.fromRGB(180, 160, 210),
+        Accent = Color3.fromRGB(138, 43, 226),
+        Success = Color3.fromRGB(34, 197, 94),
+        Warning = Color3.fromRGB(255, 215, 0),
+        Error = Color3.fromRGB(220, 20, 60),
     }
 }
 
@@ -156,90 +286,103 @@ function LunaUI:CreateWindow(config)
         ResetOnSpawn = false,
     })
     
-    -- Loading Screen with Better Animation
+    -- Loading Screen with Theme Colors
     local LoadingFrame = CreateInstance("Frame", {
         Name = "LoadingFrame",
         Size = UDim2.new(1, 0, 1, 0),
-        BackgroundColor3 = Color3.fromRGB(0, 0, 0),
+        BackgroundColor3 = Theme.Background,
         BorderSizePixel = 0,
         ZIndex = 100,
         Parent = ScreenGui,
     })
     
-    -- Animated gradient background
-    local Gradient = CreateInstance("UIGradient", {
-        Color = ColorSequence.new({
-            ColorSequenceKeypoint.new(0, Color3.fromRGB(88, 101, 242)),
-            ColorSequenceKeypoint.new(0.5, Color3.fromRGB(139, 92, 246)),
-            ColorSequenceKeypoint.new(1, Color3.fromRGB(219, 39, 119)),
-        }),
-        Rotation = 45,
-        Parent = LoadingFrame,
-    })
-    
-    -- Rotate gradient for effect
-    spawn(function()
-        while LoadingFrame.Parent do
-            Tween(Gradient, {Rotation = Gradient.Rotation + 360}, 3, Enum.EasingStyle.Linear)
-            wait(3)
-        end
-    end)
-    
-    -- Logo container
-    local LogoContainer = CreateInstance("Frame", {
-        Size = UDim2.new(0, 400, 0, 250),
-        Position = UDim2.new(0.5, -200, 0.5, -125),
+    -- Animated particles background
+    local ParticlesFrame = CreateInstance("Frame", {
+        Size = UDim2.new(1, 0, 1, 0),
         BackgroundTransparency = 1,
         Parent = LoadingFrame,
     })
     
-    -- Main logo text
+    -- Create animated particles
+    for i = 1, 20 do
+        local Particle = CreateInstance("Frame", {
+            Size = UDim2.new(0, math.random(3, 8), 0, math.random(3, 8)),
+            Position = UDim2.new(math.random(0, 100) / 100, 0, math.random(0, 100) / 100, 0),
+            BackgroundColor3 = Theme.Primary,
+            BackgroundTransparency = math.random(30, 70) / 100,
+            BorderSizePixel = 0,
+            Parent = ParticlesFrame,
+        })
+        
+        CreateInstance("UICorner", {
+            CornerRadius = UDim.new(1, 0),
+            Parent = Particle,
+        })
+        
+        -- Animate particles
+        spawn(function()
+            while Particle.Parent do
+                local randomX = math.random(-50, 50)
+                local randomY = math.random(-50, 50)
+                Tween(Particle, {
+                    Position = Particle.Position + UDim2.new(0, randomX, 0, randomY),
+                    BackgroundTransparency = math.random(30, 90) / 100
+                }, math.random(20, 40) / 10, Enum.EasingStyle.Sine)
+                wait(math.random(20, 40) / 10)
+            end
+        end)
+    end
+    
+    -- Logo container
+    local LogoContainer = CreateInstance("Frame", {
+        Size = UDim2.new(0, 400, 0, 200),
+        Position = UDim2.new(0.5, -200, 0.5, -100),
+        BackgroundTransparency = 1,
+        Parent = LoadingFrame,
+    })
+    
+    -- Main logo text with shadow
+    local LogoShadow = CreateInstance("TextLabel", {
+        Size = UDim2.new(1, 0, 0, 80),
+        Position = UDim2.new(0, 3, 0, 3),
+        BackgroundTransparency = 1,
+        Text = "3XT4SY",
+        TextColor3 = Color3.fromRGB(0, 0, 0),
+        TextSize = 64,
+        Font = Enum.Font.GothamBold,
+        TextTransparency = 0.7,
+        ZIndex = 1,
+        Parent = LogoContainer,
+    })
+    
     local LoadingLogo = CreateInstance("TextLabel", {
         Size = UDim2.new(1, 0, 0, 80),
         Position = UDim2.new(0, 0, 0, 0),
         BackgroundTransparency = 1,
         Text = "3XT4SY",
-        TextColor3 = Color3.fromRGB(255, 255, 255),
-        TextSize = 56,
+        TextColor3 = Theme.Primary,
+        TextSize = 0,
         Font = Enum.Font.GothamBold,
-        TextTransparency = 1,
+        ZIndex = 2,
         Parent = LogoContainer,
     })
     
-    -- Glow effect
-    local LogoGlow = CreateInstance("ImageLabel", {
-        Size = UDim2.new(1, 50, 0, 130),
-        Position = UDim2.new(0, -25, 0, -25),
-        BackgroundTransparency = 1,
-        Image = "rbxassetid://5554236805",
-        ImageColor3 = Color3.fromRGB(88, 101, 242),
-        ImageTransparency = 0.5,
-        ScaleType = Enum.ScaleType.Slice,
-        SliceCenter = Rect.new(23, 23, 277, 277),
-        ZIndex = -1,
+    -- Gradient on logo
+    local LogoGradient = CreateInstance("UIGradient", {
+        Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Theme.Primary),
+            ColorSequenceKeypoint.new(1, Theme.Accent),
+        }),
         Parent = LoadingLogo,
     })
     
-    -- Welcome text
-    local WelcomeText = CreateInstance("TextLabel", {
+    -- Subtitle
+    local SubtitleText = CreateInstance("TextLabel", {
         Size = UDim2.new(1, 0, 0, 30),
         Position = UDim2.new(0, 0, 0, 90),
         BackgroundTransparency = 1,
-        Text = "Welcome in 3xt4sy hub",
-        TextColor3 = Color3.fromRGB(255, 255, 255),
-        TextSize = 20,
-        Font = Enum.Font.GothamMedium,
-        TextTransparency = 1,
-        Parent = LogoContainer,
-    })
-    
-    -- Credits
-    local CreditsText = CreateInstance("TextLabel", {
-        Size = UDim2.new(1, 0, 0, 25),
-        Position = UDim2.new(0, 0, 0, 125),
-        BackgroundTransparency = 1,
         Text = "by 3xt4sy and 27azerty",
-        TextColor3 = Color3.fromRGB(200, 200, 255),
+        TextColor3 = Theme.TextDim,
         TextSize = 16,
         Font = Enum.Font.Gotham,
         TextTransparency = 1,
@@ -248,9 +391,9 @@ function LunaUI:CreateWindow(config)
     
     -- Loading bar background
     local LoadingBarBG = CreateInstance("Frame", {
-        Size = UDim2.new(0, 350, 0, 4),
-        Position = UDim2.new(0, 25, 0, 180),
-        BackgroundColor3 = Color3.fromRGB(50, 50, 50),
+        Size = UDim2.new(0, 300, 0, 4),
+        Position = UDim2.new(0, 50, 0, 150),
+        BackgroundColor3 = Theme.Surface,
         BorderSizePixel = 0,
         Parent = LogoContainer,
     })
@@ -263,7 +406,7 @@ function LunaUI:CreateWindow(config)
     -- Loading bar fill
     local LoadingBar = CreateInstance("Frame", {
         Size = UDim2.new(0, 0, 1, 0),
-        BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+        BackgroundColor3 = Theme.Primary,
         BorderSizePixel = 0,
         Parent = LoadingBarBG,
     })
@@ -275,75 +418,53 @@ function LunaUI:CreateWindow(config)
     
     local LoadingBarGradient = CreateInstance("UIGradient", {
         Color = ColorSequence.new({
-            ColorSequenceKeypoint.new(0, Color3.fromRGB(88, 101, 242)),
-            ColorSequenceKeypoint.new(1, Color3.fromRGB(219, 39, 119)),
+            ColorSequenceKeypoint.new(0, Theme.Primary),
+            ColorSequenceKeypoint.new(1, Theme.Accent),
         }),
         Parent = LoadingBar,
     })
     
-    -- Loading percentage
-    local LoadingPercent = CreateInstance("TextLabel", {
-        Size = UDim2.new(1, 0, 0, 20),
-        Position = UDim2.new(0, 0, 0, 195),
-        BackgroundTransparency = 1,
-        Text = "0%",
-        TextColor3 = Color3.fromRGB(255, 255, 255),
-        TextSize = 14,
-        Font = Enum.Font.GothamBold,
-        TextTransparency = 1,
-        Parent = LogoContainer,
-    })
-    
-    -- Animate loading with better sequence
+    -- Animate loading
     spawn(function()
-        -- Fade in logo with bounce
-        Tween(LoadingLogo, {TextTransparency = 0}, 0.6, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
-        Tween(LoadingLogo, {TextSize = 56}, 0.6, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
-        
-        wait(0.4)
-        
-        -- Fade in welcome text
-        Tween(WelcomeText, {TextTransparency = 0}, 0.5, Enum.EasingStyle.Quad)
-        
-        wait(0.3)
-        
-        -- Fade in credits
-        Tween(CreditsText, {TextTransparency = 0}, 0.5, Enum.EasingStyle.Quad)
-        
-        wait(0.3)
-        
-        -- Fade in loading bar
-        Tween(LoadingPercent, {TextTransparency = 0}, 0.3)
-        
-        -- Animate loading bar
-        for i = 0, 100, 2 do
-            LoadingBar.Size = UDim2.new(i/100, 0, 1, 0)
-            LoadingPercent.Text = i .. "%"
-            wait(0.02)
-        end
-        
-        wait(0.3)
-        
-        -- Fade out everything
-        Tween(LoadingFrame, {BackgroundTransparency = 1}, 0.5)
-        Tween(LoadingLogo, {TextTransparency = 1}, 0.5)
-        Tween(WelcomeText, {TextTransparency = 1}, 0.5)
-        Tween(CreditsText, {TextTransparency = 1}, 0.5)
-        Tween(LoadingPercent, {TextTransparency = 1}, 0.5)
-        Tween(LoadingBar, {BackgroundTransparency = 1}, 0.5)
-        Tween(LoadingBarBG, {BackgroundTransparency = 1}, 0.5)
+        -- Logo bounce in
+        Tween(LoadingLogo, {TextSize = 64}, 0.7, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
         
         wait(0.5)
+        
+        -- Fade in subtitle
+        Tween(SubtitleText, {TextTransparency = 0}, 0.5, Enum.EasingStyle.Quad)
+        
+        wait(0.3)
+        
+        -- Animate loading bar
+        Tween(LoadingBar, {Size = UDim2.new(1, 0, 1, 0)}, 1.2, Enum.EasingStyle.Quad)
+        
+        wait(1.2)
+        
+        -- Fade out
+        Tween(LoadingFrame, {BackgroundTransparency = 1}, 0.4)
+        Tween(LoadingLogo, {TextTransparency = 1}, 0.4)
+        Tween(LogoShadow, {TextTransparency = 1}, 0.4)
+        Tween(SubtitleText, {TextTransparency = 1}, 0.4)
+        Tween(LoadingBar, {BackgroundTransparency = 1}, 0.4)
+        Tween(LoadingBarBG, {BackgroundTransparency = 1}, 0.4)
+        
+        for _, particle in pairs(ParticlesFrame:GetChildren()) do
+            Tween(particle, {BackgroundTransparency = 1}, 0.4)
+        end
+        
+        wait(0.4)
         LoadingFrame:Destroy()
     end)
     
-    -- Main Container
+    -- Main Container with transparency
     local MainFrame = CreateInstance("Frame", {
         Name = "MainFrame",
         Size = UDim2.new(0, 0, 0, 0),
         Position = UDim2.new(0.5, 0, 0.5, 0),
         AnchorPoint = Vector2.new(0.5, 0.5),
         BackgroundColor3 = Theme.Background,
+        BackgroundTransparency = 0.05,
         BorderSizePixel = 0,
         ClipsDescendants = true,
         Parent = ScreenGui,
@@ -357,6 +478,19 @@ function LunaUI:CreateWindow(config)
     -- Animate window opening
     task.wait(2)
     Tween(MainFrame, {Size = UDim2.new(0, 750, 0, 500)}, 0.6, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
+    
+    -- K key to minimize
+    local minimized = false
+    UserInputService.InputBegan:Connect(function(input)
+        if input.KeyCode == Enum.KeyCode.K then
+            minimized = not minimized
+            if minimized then
+                Tween(MainFrame, {Size = UDim2.new(0, 750, 0, 45)}, 0.3, Enum.EasingStyle.Quad)
+            else
+                Tween(MainFrame, {Size = UDim2.new(0, 750, 0, 500)}, 0.3, Enum.EasingStyle.Quad)
+            end
+        end
+    end)
     
     -- Drop Shadow
     local Shadow = CreateInstance("ImageLabel", {
