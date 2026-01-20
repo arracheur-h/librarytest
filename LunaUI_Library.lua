@@ -1,6 +1,6 @@
 --[[
-    3XT4SY LUNA STYLE UI LIBRARY
-    Sidebar Navigation Design
+    3XT4SY LUNA UI LIBRARY v2
+    Complete Sidebar Navigation with Animations
 ]]
 
 local LunaUI = {}
@@ -22,8 +22,12 @@ local function CreateInstance(class, properties)
     return instance
 end
 
-local function Tween(object, properties, duration)
-    local tweenInfo = TweenInfo.new(duration or 0.3, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
+local function Tween(object, properties, duration, style, direction)
+    local tweenInfo = TweenInfo.new(
+        duration or 0.3,
+        style or Enum.EasingStyle.Quart,
+        direction or Enum.EasingDirection.Out
+    )
     local tween = TweenService:Create(object, tweenInfo, properties)
     tween:Play()
     return tween
@@ -52,25 +56,24 @@ local function MakeDraggable(frame, dragHandle)
     UserInputService.InputChanged:Connect(function(input)
         if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
             local delta = input.Position - mousePos
-            Tween(frame, {
-                Position = UDim2.new(
-                    framePos.X.Scale,
-                    framePos.X.Offset + delta.X,
-                    framePos.Y.Scale,
-                    framePos.Y.Offset + delta.Y
-                )
-            }, 0.1)
+            frame.Position = UDim2.new(
+                framePos.X.Scale,
+                framePos.X.Offset + delta.X,
+                framePos.Y.Scale,
+                framePos.Y.Offset + delta.Y
+            )
         end
     end)
 end
 
--- Theme System
+-- Extended Theme System
 local Themes = {
     Dark = {
         Primary = Color3.fromRGB(88, 101, 242),
         Background = Color3.fromRGB(35, 39, 42),
         Sidebar = Color3.fromRGB(47, 49, 54),
         Surface = Color3.fromRGB(47, 49, 54),
+        Hover = Color3.fromRGB(60, 63, 68),
         Text = Color3.fromRGB(255, 255, 255),
         TextDim = Color3.fromRGB(142, 146, 151),
         Accent = Color3.fromRGB(88, 101, 242),
@@ -82,13 +85,53 @@ local Themes = {
         Primary = Color3.fromRGB(88, 101, 242),
         Background = Color3.fromRGB(255, 255, 255),
         Sidebar = Color3.fromRGB(242, 243, 245),
-        Surface = Color3.fromRGB(255, 255, 255),
+        Surface = Color3.fromRGB(249, 249, 251),
+        Hover = Color3.fromRGB(235, 236, 240),
         Text = Color3.fromRGB(0, 0, 0),
         TextDim = Color3.fromRGB(114, 118, 125),
         Accent = Color3.fromRGB(88, 101, 242),
         Success = Color3.fromRGB(67, 181, 129),
         Warning = Color3.fromRGB(250, 166, 26),
         Error = Color3.fromRGB(240, 71, 71),
+    },
+    Cyberpunk = {
+        Primary = Color3.fromRGB(255, 0, 102),
+        Background = Color3.fromRGB(15, 15, 25),
+        Sidebar = Color3.fromRGB(25, 25, 40),
+        Surface = Color3.fromRGB(30, 30, 45),
+        Hover = Color3.fromRGB(40, 40, 55),
+        Text = Color3.fromRGB(255, 255, 255),
+        TextDim = Color3.fromRGB(180, 180, 220),
+        Accent = Color3.fromRGB(0, 255, 255),
+        Success = Color3.fromRGB(0, 255, 157),
+        Warning = Color3.fromRGB(255, 191, 0),
+        Error = Color3.fromRGB(255, 0, 102),
+    },
+    Ocean = {
+        Primary = Color3.fromRGB(14, 165, 233),
+        Background = Color3.fromRGB(12, 28, 51),
+        Sidebar = Color3.fromRGB(20, 40, 70),
+        Surface = Color3.fromRGB(25, 48, 80),
+        Hover = Color3.fromRGB(35, 58, 90),
+        Text = Color3.fromRGB(240, 249, 255),
+        TextDim = Color3.fromRGB(148, 199, 236),
+        Accent = Color3.fromRGB(6, 182, 212),
+        Success = Color3.fromRGB(16, 185, 129),
+        Warning = Color3.fromRGB(251, 191, 36),
+        Error = Color3.fromRGB(239, 68, 68),
+    },
+    Midnight = {
+        Primary = Color3.fromRGB(124, 58, 237),
+        Background = Color3.fromRGB(15, 23, 42),
+        Sidebar = Color3.fromRGB(25, 35, 58),
+        Surface = Color3.fromRGB(30, 41, 59),
+        Hover = Color3.fromRGB(40, 51, 69),
+        Text = Color3.fromRGB(248, 250, 252),
+        TextDim = Color3.fromRGB(148, 163, 184),
+        Accent = Color3.fromRGB(147, 51, 234),
+        Success = Color3.fromRGB(34, 197, 94),
+        Warning = Color3.fromRGB(251, 191, 36),
+        Error = Color3.fromRGB(239, 68, 68),
     }
 }
 
@@ -96,7 +139,9 @@ local Themes = {
 function LunaUI:CreateWindow(config)
     config = config or {}
     local WindowName = config.Name or "Luna UI"
-    local Theme = Themes[config.Theme or "Dark"]
+    local ThemeName = config.Theme or "Dark"
+    local Theme = Themes[ThemeName]
+    local ShowLogo = config.Logo ~= false
     
     -- Remove existing GUI
     if CoreGui:FindFirstChild("LunaUI") then
@@ -111,75 +156,142 @@ function LunaUI:CreateWindow(config)
         ResetOnSpawn = false,
     })
     
+    -- Loading Screen
+    local LoadingFrame = CreateInstance("Frame", {
+        Name = "LoadingFrame",
+        Size = UDim2.new(1, 0, 1, 0),
+        BackgroundColor3 = Theme.Background,
+        BorderSizePixel = 0,
+        ZIndex = 100,
+        Parent = ScreenGui,
+    })
+    
+    local LoadingLogo = CreateInstance("TextLabel", {
+        Size = UDim2.new(0, 200, 0, 60),
+        Position = UDim2.new(0.5, -100, 0.5, -80),
+        BackgroundTransparency = 1,
+        Text = "3xt4sy",
+        TextColor3 = Theme.Primary,
+        TextSize = 48,
+        Font = Enum.Font.GothamBold,
+        TextTransparency = 1,
+        Parent = LoadingFrame,
+    })
+    
+    local LoadingText = CreateInstance("TextLabel", {
+        Size = UDim2.new(0, 300, 0, 30),
+        Position = UDim2.new(0.5, -150, 0.5, 0),
+        BackgroundTransparency = 1,
+        Text = "Loading interface...",
+        TextColor3 = Theme.Text,
+        TextSize = 14,
+        Font = Enum.Font.Gotham,
+        TextTransparency = 1,
+        Parent = LoadingFrame,
+    })
+    
+    local LoadingBar = CreateInstance("Frame", {
+        Size = UDim2.new(0, 0, 0, 3),
+        Position = UDim2.new(0.5, -150, 0.5, 40),
+        BackgroundColor3 = Theme.Primary,
+        BorderSizePixel = 0,
+        Parent = LoadingFrame,
+    })
+    
+    CreateInstance("UICorner", {
+        CornerRadius = UDim.new(1, 0),
+        Parent = LoadingBar,
+    })
+    
+    -- Animate loading
+    spawn(function()
+        Tween(LoadingLogo, {TextTransparency = 0}, 0.5, Enum.EasingStyle.Quad)
+        wait(0.3)
+        Tween(LoadingText, {TextTransparency = 0}, 0.5, Enum.EasingStyle.Quad)
+        wait(0.2)
+        Tween(LoadingBar, {Size = UDim2.new(0, 300, 0, 3)}, 1.5, Enum.EasingStyle.Quad)
+        wait(1.5)
+        Tween(LoadingFrame, {BackgroundTransparency = 1}, 0.5)
+        Tween(LoadingLogo, {TextTransparency = 1}, 0.5)
+        Tween(LoadingText, {TextTransparency = 1}, 0.5)
+        Tween(LoadingBar, {BackgroundTransparency = 1}, 0.5)
+        wait(0.5)
+        LoadingFrame:Destroy()
+    end)
+    
     -- Main Container
     local MainFrame = CreateInstance("Frame", {
         Name = "MainFrame",
-        Size = UDim2.new(0, 700, 0, 450),
-        Position = UDim2.new(0.5, -350, 0.5, -225),
+        Size = UDim2.new(0, 0, 0, 0),
+        Position = UDim2.new(0.5, 0, 0.5, 0),
+        AnchorPoint = Vector2.new(0.5, 0.5),
         BackgroundColor3 = Theme.Background,
         BorderSizePixel = 0,
+        ClipsDescendants = true,
         Parent = ScreenGui,
     })
     
     CreateInstance("UICorner", {
-        CornerRadius = UDim.new(0, 8),
+        CornerRadius = UDim.new(0, 10),
         Parent = MainFrame,
     })
+    
+    -- Animate window opening
+    task.wait(2)
+    Tween(MainFrame, {Size = UDim2.new(0, 750, 0, 500)}, 0.6, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
     
     -- Drop Shadow
     local Shadow = CreateInstance("ImageLabel", {
         Name = "Shadow",
-        Size = UDim2.new(1, 30, 1, 30),
-        Position = UDim2.new(0, -15, 0, -15),
+        Size = UDim2.new(1, 40, 1, 40),
+        Position = UDim2.new(0.5, 0, 0.5, 0),
+        AnchorPoint = Vector2.new(0.5, 0.5),
         BackgroundTransparency = 1,
         Image = "rbxassetid://5554236805",
         ImageColor3 = Color3.fromRGB(0, 0, 0),
-        ImageTransparency = 0.5,
+        ImageTransparency = 0.6,
         ScaleType = Enum.ScaleType.Slice,
         SliceCenter = Rect.new(23, 23, 277, 277),
+        ZIndex = -1,
         Parent = MainFrame,
-        ZIndex = 0,
     })
     
     -- Top Bar
     local TopBar = CreateInstance("Frame", {
         Name = "TopBar",
-        Size = UDim2.new(1, 0, 0, 40),
+        Size = UDim2.new(1, 0, 0, 45),
         BackgroundColor3 = Theme.Sidebar,
         BorderSizePixel = 0,
         Parent = MainFrame,
     })
     
     CreateInstance("UICorner", {
-        CornerRadius = UDim.new(0, 8),
+        CornerRadius = UDim.new(0, 10),
         Parent = TopBar,
     })
     
-    -- Bottom mask for TopBar
     local TopBarMask = CreateInstance("Frame", {
-        Size = UDim2.new(1, 0, 0, 8),
-        Position = UDim2.new(0, 0, 1, -8),
+        Size = UDim2.new(1, 0, 0, 10),
+        Position = UDim2.new(0, 0, 1, -10),
         BackgroundColor3 = Theme.Sidebar,
         BorderSizePixel = 0,
         Parent = TopBar,
     })
     
-    -- Menu Icon (3 lines)
-    local MenuButton = CreateInstance("TextButton", {
-        Size = UDim2.new(0, 40, 0, 40),
-        Position = UDim2.new(0, 5, 0, 0),
+    -- Logo/Icon
+    local Logo = CreateInstance("ImageLabel", {
+        Size = UDim2.new(0, 24, 0, 24),
+        Position = UDim2.new(0, 12, 0.5, -12),
         BackgroundTransparency = 1,
-        Text = "☰",
-        TextColor3 = Theme.Text,
-        TextSize = 20,
-        Font = Enum.Font.GothamBold,
+        Image = "rbxassetid://7733674731",
+        ImageColor3 = Theme.Primary,
         Parent = TopBar,
     })
     
     -- Title
     local Title = CreateInstance("TextLabel", {
         Size = UDim2.new(1, -100, 1, 0),
-        Position = UDim2.new(0, 50, 0, 0),
+        Position = UDim2.new(0, 45, 0, 0),
         BackgroundTransparency = 1,
         Text = WindowName,
         TextColor3 = Theme.Text,
@@ -189,27 +301,63 @@ function LunaUI:CreateWindow(config)
         Parent = TopBar,
     })
     
-    -- Close Button
-    local CloseButton = CreateInstance("TextButton", {
-        Size = UDim2.new(0, 40, 0, 40),
-        Position = UDim2.new(1, -45, 0, 0),
-        BackgroundTransparency = 1,
-        Text = "×",
+    -- Minimize Button
+    local MinimizeButton = CreateInstance("TextButton", {
+        Size = UDim2.new(0, 35, 0, 35),
+        Position = UDim2.new(1, -80, 0.5, -17.5),
+        BackgroundColor3 = Theme.Surface,
+        Text = "─",
         TextColor3 = Theme.Text,
-        TextSize = 24,
+        TextSize = 16,
         Font = Enum.Font.GothamBold,
         Parent = TopBar,
     })
     
+    CreateInstance("UICorner", {
+        CornerRadius = UDim.new(0, 6),
+        Parent = MinimizeButton,
+    })
+    
+    local minimized = false
+    MinimizeButton.MouseButton1Click:Connect(function()
+        minimized = not minimized
+        if minimized then
+            Tween(MainFrame, {Size = UDim2.new(0, 750, 0, 45)}, 0.3)
+            MinimizeButton.Text = "+"
+        else
+            Tween(MainFrame, {Size = UDim2.new(0, 750, 0, 500)}, 0.3)
+            MinimizeButton.Text = "─"
+        end
+    end)
+    
+    -- Close Button
+    local CloseButton = CreateInstance("TextButton", {
+        Size = UDim2.new(0, 35, 0, 35),
+        Position = UDim2.new(1, -40, 0.5, -17.5),
+        BackgroundColor3 = Color3.fromRGB(240, 71, 71),
+        Text = "×",
+        TextColor3 = Color3.fromRGB(255, 255, 255),
+        TextSize = 20,
+        Font = Enum.Font.GothamBold,
+        Parent = TopBar,
+    })
+    
+    CreateInstance("UICorner", {
+        CornerRadius = UDim.new(0, 6),
+        Parent = CloseButton,
+    })
+    
     CloseButton.MouseButton1Click:Connect(function()
+        Tween(MainFrame, {Size = UDim2.new(0, 0, 0, 0)}, 0.4, Enum.EasingStyle.Back, Enum.EasingDirection.In)
+        wait(0.4)
         ScreenGui:Destroy()
     end)
     
     -- Sidebar
     local Sidebar = CreateInstance("Frame", {
         Name = "Sidebar",
-        Size = UDim2.new(0, 60, 1, -40),
-        Position = UDim2.new(0, 0, 0, 40),
+        Size = UDim2.new(0, 70, 1, -45),
+        Position = UDim2.new(0, 0, 0, 45),
         BackgroundColor3 = Theme.Sidebar,
         BorderSizePixel = 0,
         Parent = MainFrame,
@@ -217,36 +365,42 @@ function LunaUI:CreateWindow(config)
     
     local SidebarList = CreateInstance("UIListLayout", {
         SortOrder = Enum.SortOrder.LayoutOrder,
-        Padding = UDim.new(0, 5),
+        Padding = UDim.new(0, 8),
         Parent = Sidebar,
     })
     
     CreateInstance("UIPadding", {
-        PaddingTop = UDim.new(0, 10),
+        PaddingTop = UDim.new(0, 15),
+        PaddingLeft = UDim.new(0, 10),
+        PaddingRight = UDim.new(0, 10),
         Parent = Sidebar,
     })
     
     -- Content Area
     local ContentArea = CreateInstance("Frame", {
         Name = "ContentArea",
-        Size = UDim2.new(1, -60, 1, -40),
-        Position = UDim2.new(0, 60, 0, 40),
+        Size = UDim2.new(1, -70, 1, -45),
+        Position = UDim2.new(0, 70, 0, 45),
         BackgroundColor3 = Theme.Background,
         BorderSizePixel = 0,
+        ClipsDescendants = true,
         Parent = MainFrame,
     })
     
     CreateInstance("UICorner", {
-        CornerRadius = UDim.new(0, 8),
+        CornerRadius = UDim.new(0, 10),
         Parent = ContentArea,
     })
     
-    -- Mask for ContentArea
     local ContentMask = CreateInstance("Frame", {
-        Size = UDim2.new(0, 8, 1, 0),
-        Position = UDim2.new(0, 0, 0, 0),
+        Size = UDim2.new(0, 10, 1, 0),
         BackgroundColor3 = Theme.Background,
         BorderSizePixel = 0,
+        Parent = ContentArea,
+    })
+    
+    CreateInstance("UICorner", {
+        CornerRadius = UDim.new(0, 10),
         Parent = ContentArea,
     })
     
@@ -258,52 +412,104 @@ function LunaUI:CreateWindow(config)
         Tabs = {},
         CurrentTab = nil,
         Theme = Theme,
+        ThemeName = ThemeName,
         ScreenGui = ScreenGui,
         MainFrame = MainFrame,
         Sidebar = Sidebar,
         ContentArea = ContentArea,
     }
     
+    -- Theme Changer
+    function Window:SetTheme(themeName)
+        if not Themes[themeName] then return end
+        Theme = Themes[themeName]
+        Window.Theme = Theme
+        Window.ThemeName = themeName
+        
+        -- Update colors
+        Tween(MainFrame, {BackgroundColor3 = Theme.Background}, 0.3)
+        Tween(ContentArea, {BackgroundColor3 = Theme.Background}, 0.3)
+        Tween(TopBar, {BackgroundColor3 = Theme.Sidebar}, 0.3)
+        Tween(TopBarMask, {BackgroundColor3 = Theme.Sidebar}, 0.3)
+        Tween(Sidebar, {BackgroundColor3 = Theme.Sidebar}, 0.3)
+        Tween(ContentMask, {BackgroundColor3 = Theme.Background}, 0.3)
+        Tween(Title, {TextColor3 = Theme.Text}, 0.3)
+        Tween(Logo, {ImageColor3 = Theme.Primary}, 0.3)
+        
+        self:Notify({
+            Title = "Theme Changed",
+            Content = themeName .. " theme applied",
+            Duration = 2,
+            Type = "Success"
+        })
+    end
+    
     -- Create Tab
     function Window:CreateTab(tabConfig)
         tabConfig = tabConfig or {}
         local TabName = tabConfig.Name or "Tab"
-        local TabIcon = tabConfig.Icon or "?"
+        local TabIcon = tabConfig.Icon or "rbxassetid://7733674731"
         
         -- Tab Button in Sidebar
         local TabButton = CreateInstance("TextButton", {
             Size = UDim2.new(1, 0, 0, 50),
-            BackgroundColor3 = Theme.Sidebar,
-            BackgroundTransparency = 0,
+            BackgroundColor3 = Theme.Surface,
+            BackgroundTransparency = 1,
             BorderSizePixel = 0,
             Text = "",
+            AutoButtonColor = false,
             Parent = Sidebar,
         })
         
         CreateInstance("UICorner", {
-            CornerRadius = UDim.new(0, 6),
+            CornerRadius = UDim.new(0, 8),
             Parent = TabButton,
         })
         
-        -- Icon
-        local Icon = CreateInstance("TextLabel", {
-            Size = UDim2.new(1, 0, 1, 0),
-            BackgroundTransparency = 1,
-            Text = TabIcon,
-            TextColor3 = Theme.TextDim,
-            TextSize = 20,
-            Font = Enum.Font.GothamBold,
-            Parent = TabButton,
-        })
+        -- Icon (support both text and image)
+        local Icon
+        if TabIcon:find("rbxassetid://") then
+            Icon = CreateInstance("ImageLabel", {
+                Size = UDim2.new(0, 28, 0, 28),
+                Position = UDim2.new(0.5, -14, 0.5, -14),
+                BackgroundTransparency = 1,
+                Image = TabIcon,
+                ImageColor3 = Theme.TextDim,
+                Parent = TabButton,
+            })
+        else
+            Icon = CreateInstance("TextLabel", {
+                Size = UDim2.new(1, 0, 1, 0),
+                BackgroundTransparency = 1,
+                Text = TabIcon,
+                TextColor3 = Theme.TextDim,
+                TextSize = 22,
+                Font = Enum.Font.GothamBold,
+                Parent = TabButton,
+            })
+        end
+        
+        -- Hover effect
+        TabButton.MouseEnter:Connect(function()
+            if Window.CurrentTab and Window.CurrentTab.Button ~= TabButton then
+                Tween(TabButton, {BackgroundTransparency = 0.7}, 0.2)
+            end
+        end)
+        
+        TabButton.MouseLeave:Connect(function()
+            if Window.CurrentTab and Window.CurrentTab.Button ~= TabButton then
+                Tween(TabButton, {BackgroundTransparency = 1}, 0.2)
+            end
+        end)
         
         -- Tab Content Container
         local TabContent = CreateInstance("ScrollingFrame", {
             Name = TabName .. "Content",
-            Size = UDim2.new(1, -20, 1, -20),
-            Position = UDim2.new(0, 10, 0, 10),
+            Size = UDim2.new(1, -30, 1, -30),
+            Position = UDim2.new(0, 15, 0, 15),
             BackgroundTransparency = 1,
             BorderSizePixel = 0,
-            ScrollBarThickness = 4,
+            ScrollBarThickness = 5,
             ScrollBarImageColor3 = Theme.Primary,
             CanvasSize = UDim2.new(0, 0, 0, 0),
             Visible = false,
@@ -312,58 +518,100 @@ function LunaUI:CreateWindow(config)
         
         local ContentList = CreateInstance("UIListLayout", {
             SortOrder = Enum.SortOrder.LayoutOrder,
-            Padding = UDim.new(0, 8),
+            Padding = UDim.new(0, 10),
             Parent = TabContent,
         })
         
         ContentList:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-            TabContent.CanvasSize = UDim2.new(0, 0, 0, ContentList.AbsoluteContentSize.Y + 10)
+            TabContent.CanvasSize = UDim2.new(0, 0, 0, ContentList.AbsoluteContentSize.Y + 20)
         end)
         
         -- Tab object
         local Tab = {
             Button = TabButton,
             Content = TabContent,
+            Icon = Icon,
             Name = TabName,
         }
         
-        -- Tab switching
+        -- Tab switching with animation
         TabButton.MouseButton1Click:Connect(function()
             for _, tab in pairs(Window.Tabs) do
+                Tween(tab.Content, {Position = UDim2.new(0, -50, 0, 15)}, 0.15)
+                task.wait(0.15)
                 tab.Content.Visible = false
-                Tween(tab.Button, {BackgroundTransparency = 0}, 0.2)
-                tab.Button.Icon.TextColor3 = Theme.TextDim
+                tab.Content.Position = UDim2.new(0, 50, 0, 15)
+                Tween(tab.Button, {BackgroundTransparency = 1}, 0.2)
+                if tab.Icon.ClassName == "ImageLabel" then
+                    Tween(tab.Icon, {ImageColor3 = Theme.TextDim}, 0.2)
+                else
+                    Tween(tab.Icon, {TextColor3 = Theme.TextDim}, 0.2)
+                end
             end
             
             TabContent.Visible = true
-            Tween(TabButton, {BackgroundTransparency = 0.5}, 0.2)
-            Icon.TextColor3 = Theme.Primary
+            Tween(TabContent, {Position = UDim2.new(0, 15, 0, 15)}, 0.3, Enum.EasingStyle.Quad)
+            Tween(TabButton, {BackgroundTransparency = 0}, 0.2)
+            if Icon.ClassName == "ImageLabel" then
+                Tween(Icon, {ImageColor3 = Theme.Primary}, 0.2)
+            else
+                Tween(Icon, {TextColor3 = Theme.Primary}, 0.2)
+            end
             Window.CurrentTab = Tab
         end)
-        
-        -- Store icon reference
-        TabButton.Icon = Icon
         
         table.insert(Window.Tabs, Tab)
         
         -- Auto-select first tab
         if #Window.Tabs == 1 then
+            task.wait(2.6)
             TabContent.Visible = true
-            TabButton.BackgroundTransparency = 0.5
-            Icon.TextColor3 = Theme.Primary
+            TabButton.BackgroundTransparency = 0
+            if Icon.ClassName == "ImageLabel" then
+                Icon.ImageColor3 = Theme.Primary
+            else
+                Icon.TextColor3 = Theme.Primary
+            end
             Window.CurrentTab = Tab
         end
         
-        -- Create Label
-        function Tab:CreateLabel(text)
-            local Label = CreateInstance("TextLabel", {
-                Size = UDim2.new(1, 0, 0, 20),
+        -- Components
+        function Tab:CreateSection(text)
+            local Section = CreateInstance("TextLabel", {
+                Size = UDim2.new(1, 0, 0, 30),
                 BackgroundTransparency = 1,
                 Text = text,
-                TextColor3 = text == "" and Theme.Background or Theme.TextDim,
+                TextColor3 = Theme.Text,
+                TextSize = 16,
+                Font = Enum.Font.GothamBold,
+                TextXAlignment = Enum.TextXAlignment.Left,
+                Parent = TabContent,
+            })
+            
+            CreateInstance("UIPadding", {
+                PaddingLeft = UDim.new(0, 5),
+                Parent = Section,
+            })
+            
+            local Divider = CreateInstance("Frame", {
+                Size = UDim2.new(1, 0, 0, 2),
+                Position = UDim2.new(0, 0, 1, -2),
+                BackgroundColor3 = Theme.Primary,
+                BorderSizePixel = 0,
+                Parent = Section,
+            })
+        end
+        
+        function Tab:CreateLabel(text)
+            local Label = CreateInstance("TextLabel", {
+                Size = UDim2.new(1, 0, 0, text == "" and 5 or 25),
+                BackgroundTransparency = 1,
+                Text = text,
+                TextColor3 = Theme.TextDim,
                 TextSize = 13,
                 Font = Enum.Font.Gotham,
                 TextXAlignment = Enum.TextXAlignment.Left,
+                TextWrapped = true,
                 Parent = TabContent,
             })
             
@@ -373,49 +621,61 @@ function LunaUI:CreateWindow(config)
             })
         end
         
-        -- Create Button
         function Tab:CreateButton(btnConfig)
             btnConfig = btnConfig or {}
             local ButtonName = btnConfig.Name or "Button"
             local Callback = btnConfig.Callback or function() end
             
             local Button = CreateInstance("TextButton", {
-                Size = UDim2.new(1, 0, 0, 35),
+                Size = UDim2.new(1, 0, 0, 40),
                 BackgroundColor3 = Theme.Surface,
                 BorderSizePixel = 0,
                 Text = "",
+                AutoButtonColor = false,
                 Parent = TabContent,
             })
             
             CreateInstance("UICorner", {
-                CornerRadius = UDim.new(0, 6),
+                CornerRadius = UDim.new(0, 8),
                 Parent = Button,
             })
             
             local ButtonText = CreateInstance("TextLabel", {
                 Size = UDim2.new(1, -20, 1, 0),
-                Position = UDim2.new(0, 10, 0, 0),
+                Position = UDim2.new(0, 15, 0, 0),
                 BackgroundTransparency = 1,
                 Text = ButtonName,
                 TextColor3 = Theme.Text,
                 TextSize = 14,
-                Font = Enum.Font.Gotham,
+                Font = Enum.Font.GothamMedium,
                 TextXAlignment = Enum.TextXAlignment.Left,
                 Parent = Button,
             })
             
+            local Arrow = CreateInstance("TextLabel", {
+                Size = UDim2.new(0, 20, 1, 0),
+                Position = UDim2.new(1, -25, 0, 0),
+                BackgroundTransparency = 1,
+                Text = "→",
+                TextColor3 = Theme.Primary,
+                TextSize = 16,
+                Font = Enum.Font.GothamBold,
+                Parent = Button,
+            })
+            
             Button.MouseEnter:Connect(function()
-                Tween(Button, {BackgroundColor3 = Theme.Primary}, 0.2)
+                Tween(Button, {BackgroundColor3 = Theme.Hover}, 0.2)
+                Tween(Arrow, {Position = UDim2.new(1, -20, 0, 0)}, 0.2)
             end)
             
             Button.MouseLeave:Connect(function()
                 Tween(Button, {BackgroundColor3 = Theme.Surface}, 0.2)
+                Tween(Arrow, {Position = UDim2.new(1, -25, 0, 0)}, 0.2)
             end)
             
             Button.MouseButton1Click:Connect(Callback)
         end
         
-        -- Create Toggle
         function Tab:CreateToggle(toggleConfig)
             toggleConfig = toggleConfig or {}
             local ToggleName = toggleConfig.Name or "Toggle"
@@ -423,35 +683,36 @@ function LunaUI:CreateWindow(config)
             local Callback = toggleConfig.Callback or function() end
             
             local ToggleFrame = CreateInstance("Frame", {
-                Size = UDim2.new(1, 0, 0, 35),
+                Size = UDim2.new(1, 0, 0, 40),
                 BackgroundColor3 = Theme.Surface,
                 BorderSizePixel = 0,
                 Parent = TabContent,
             })
             
             CreateInstance("UICorner", {
-                CornerRadius = UDim.new(0, 6),
+                CornerRadius = UDim.new(0, 8),
                 Parent = ToggleFrame,
             })
             
             local ToggleText = CreateInstance("TextLabel", {
-                Size = UDim2.new(1, -60, 1, 0),
-                Position = UDim2.new(0, 10, 0, 0),
+                Size = UDim2.new(1, -70, 1, 0),
+                Position = UDim2.new(0, 15, 0, 0),
                 BackgroundTransparency = 1,
                 Text = ToggleName,
                 TextColor3 = Theme.Text,
                 TextSize = 14,
-                Font = Enum.Font.Gotham,
+                Font = Enum.Font.GothamMedium,
                 TextXAlignment = Enum.TextXAlignment.Left,
                 Parent = ToggleFrame,
             })
             
             local ToggleButton = CreateInstance("TextButton", {
-                Size = UDim2.new(0, 40, 0, 20),
-                Position = UDim2.new(1, -50, 0.5, -10),
+                Size = UDim2.new(0, 45, 0, 24),
+                Position = UDim2.new(1, -55, 0.5, -12),
                 BackgroundColor3 = Default and Theme.Success or Theme.TextDim,
                 BorderSizePixel = 0,
                 Text = "",
+                AutoButtonColor = false,
                 Parent = ToggleFrame,
             })
             
@@ -461,8 +722,8 @@ function LunaUI:CreateWindow(config)
             })
             
             local ToggleIndicator = CreateInstance("Frame", {
-                Size = UDim2.new(0, 16, 0, 16),
-                Position = Default and UDim2.new(1, -18, 0.5, -8) or UDim2.new(0, 2, 0.5, -8),
+                Size = UDim2.new(0, 18, 0, 18),
+                Position = Default and UDim2.new(1, -21, 0.5, -9) or UDim2.new(0, 3, 0.5, -9),
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
                 BorderSizePixel = 0,
                 Parent = ToggleButton,
@@ -480,11 +741,10 @@ function LunaUI:CreateWindow(config)
                 Callback(toggled)
                 
                 Tween(ToggleButton, {BackgroundColor3 = toggled and Theme.Success or Theme.TextDim}, 0.2)
-                Tween(ToggleIndicator, {Position = toggled and UDim2.new(1, -18, 0.5, -8) or UDim2.new(0, 2, 0.5, -8)}, 0.2)
+                Tween(ToggleIndicator, {Position = toggled and UDim2.new(1, -21, 0.5, -9) or UDim2.new(0, 3, 0.5, -9)}, 0.25, Enum.EasingStyle.Back)
             end)
         end
         
-        -- Create Slider
         function Tab:CreateSlider(sliderConfig)
             sliderConfig = sliderConfig or {}
             local SliderName = sliderConfig.Name or "Slider"
@@ -494,32 +754,32 @@ function LunaUI:CreateWindow(config)
             local Callback = sliderConfig.Callback or function() end
             
             local SliderFrame = CreateInstance("Frame", {
-                Size = UDim2.new(1, 0, 0, 50),
+                Size = UDim2.new(1, 0, 0, 55),
                 BackgroundColor3 = Theme.Surface,
                 BorderSizePixel = 0,
                 Parent = TabContent,
             })
             
             CreateInstance("UICorner", {
-                CornerRadius = UDim.new(0, 6),
+                CornerRadius = UDim.new(0, 8),
                 Parent = SliderFrame,
             })
             
             local SliderText = CreateInstance("TextLabel", {
-                Size = UDim2.new(1, -60, 0, 20),
-                Position = UDim2.new(0, 10, 0, 5),
+                Size = UDim2.new(1, -70, 0, 20),
+                Position = UDim2.new(0, 15, 0, 8),
                 BackgroundTransparency = 1,
                 Text = SliderName,
                 TextColor3 = Theme.Text,
                 TextSize = 14,
-                Font = Enum.Font.Gotham,
+                Font = Enum.Font.GothamMedium,
                 TextXAlignment = Enum.TextXAlignment.Left,
                 Parent = SliderFrame,
             })
             
             local ValueLabel = CreateInstance("TextLabel", {
-                Size = UDim2.new(0, 50, 0, 20),
-                Position = UDim2.new(1, -60, 0, 5),
+                Size = UDim2.new(0, 60, 0, 20),
+                Position = UDim2.new(1, -65, 0, 8),
                 BackgroundTransparency = 1,
                 Text = tostring(Default),
                 TextColor3 = Theme.Primary,
@@ -530,9 +790,9 @@ function LunaUI:CreateWindow(config)
             })
             
             local SliderTrack = CreateInstance("Frame", {
-                Size = UDim2.new(1, -20, 0, 4),
-                Position = UDim2.new(0, 10, 1, -15),
-                BackgroundColor3 = Theme.TextDim,
+                Size = UDim2.new(1, -30, 0, 5),
+                Position = UDim2.new(0, 15, 1, -18),
+                BackgroundColor3 = Theme.Hover,
                 BorderSizePixel = 0,
                 Parent = SliderFrame,
             })
@@ -552,6 +812,25 @@ function LunaUI:CreateWindow(config)
             CreateInstance("UICorner", {
                 CornerRadius = UDim.new(1, 0),
                 Parent = SliderFill,
+            })
+            
+            local SliderButton = CreateInstance("Frame", {
+                Size = UDim2.new(0, 15, 0, 15),
+                Position = UDim2.new((Default - Min) / (Max - Min), -7.5, 0.5, -7.5),
+                BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+                BorderSizePixel = 0,
+                Parent = SliderTrack,
+            })
+            
+            CreateInstance("UICorner", {
+                CornerRadius = UDim.new(1, 0),
+                Parent = SliderButton,
+            })
+            
+            CreateInstance("UIStroke", {
+                Color = Theme.Primary,
+                Thickness = 3,
+                Parent = SliderButton,
             })
             
             local dragging = false
@@ -577,13 +856,13 @@ function LunaUI:CreateWindow(config)
                     local finalValue = math.floor(Min + (Max - Min) * value)
                     
                     SliderFill.Size = UDim2.new(value, 0, 1, 0)
+                    SliderButton.Position = UDim2.new(value, -7.5, 0.5, -7.5)
                     ValueLabel.Text = tostring(finalValue)
                     Callback(finalValue)
                 end
             end)
         end
         
-        -- Create Dropdown
         function Tab:CreateDropdown(dropdownConfig)
             dropdownConfig = dropdownConfig or {}
             local DropdownName = dropdownConfig.Name or "Dropdown"
@@ -592,14 +871,14 @@ function LunaUI:CreateWindow(config)
             local Callback = dropdownConfig.Callback or function() end
             
             local DropdownFrame = CreateInstance("Frame", {
-                Size = UDim2.new(1, 0, 0, 35),
+                Size = UDim2.new(1, 0, 0, 40),
                 BackgroundColor3 = Theme.Surface,
                 BorderSizePixel = 0,
                 Parent = TabContent,
             })
             
             CreateInstance("UICorner", {
-                CornerRadius = UDim.new(0, 6),
+                CornerRadius = UDim.new(0, 8),
                 Parent = DropdownFrame,
             })
             
@@ -611,20 +890,20 @@ function LunaUI:CreateWindow(config)
             })
             
             local DropdownText = CreateInstance("TextLabel", {
-                Size = UDim2.new(1, -40, 1, 0),
-                Position = UDim2.new(0, 10, 0, 0),
+                Size = UDim2.new(1, -50, 1, 0),
+                Position = UDim2.new(0, 15, 0, 0),
                 BackgroundTransparency = 1,
                 Text = DropdownName .. ": " .. Default,
                 TextColor3 = Theme.Text,
                 TextSize = 14,
-                Font = Enum.Font.Gotham,
+                Font = Enum.Font.GothamMedium,
                 TextXAlignment = Enum.TextXAlignment.Left,
                 Parent = DropdownFrame,
             })
             
             local Arrow = CreateInstance("TextLabel", {
-                Size = UDim2.new(0, 20, 1, 0),
-                Position = UDim2.new(1, -30, 0, 0),
+                Size = UDim2.new(0, 25, 1, 0),
+                Position = UDim2.new(1, -35, 0, 0),
                 BackgroundTransparency = 1,
                 Text = "▼",
                 TextColor3 = Theme.TextDim,
@@ -640,11 +919,18 @@ function LunaUI:CreateWindow(config)
                 BorderSizePixel = 0,
                 ClipsDescendants = true,
                 Visible = false,
+                ZIndex = 10,
                 Parent = DropdownFrame,
             })
             
             CreateInstance("UICorner", {
-                CornerRadius = UDim.new(0, 6),
+                CornerRadius = UDim.new(0, 8),
+                Parent = DropdownContainer,
+            })
+            
+            CreateInstance("UIStroke", {
+                Color = Theme.Primary,
+                Thickness = 1,
                 Parent = DropdownContainer,
             })
             
@@ -657,7 +943,7 @@ function LunaUI:CreateWindow(config)
             
             for _, option in ipairs(Options) do
                 local OptionButton = CreateInstance("TextButton", {
-                    Size = UDim2.new(1, 0, 0, 30),
+                    Size = UDim2.new(1, 0, 0, 35),
                     BackgroundTransparency = 1,
                     Text = option,
                     TextColor3 = Theme.Text,
@@ -666,15 +952,23 @@ function LunaUI:CreateWindow(config)
                     Parent = DropdownContainer,
                 })
                 
+                OptionButton.MouseEnter:Connect(function()
+                    Tween(OptionButton, {BackgroundTransparency = 0.9}, 0.1)
+                end)
+                
+                OptionButton.MouseLeave:Connect(function()
+                    Tween(OptionButton, {BackgroundTransparency = 1}, 0.1)
+                end)
+                
                 OptionButton.MouseButton1Click:Connect(function()
                     DropdownText.Text = DropdownName .. ": " .. option
                     Callback(option)
                     
                     isOpen = false
                     Tween(DropdownContainer, {Size = UDim2.new(1, 0, 0, 0)}, 0.2)
+                    Tween(Arrow, {Rotation = 0}, 0.2)
                     wait(0.2)
                     DropdownContainer.Visible = false
-                    Arrow.Text = "▼"
                 end)
             end
             
@@ -682,18 +976,17 @@ function LunaUI:CreateWindow(config)
                 isOpen = not isOpen
                 if isOpen then
                     DropdownContainer.Visible = true
-                    Tween(DropdownContainer, {Size = UDim2.new(1, 0, 0, OptionsList.AbsoluteContentSize.Y)}, 0.2)
-                    Arrow.Text = "▲"
+                    Tween(DropdownContainer, {Size = UDim2.new(1, 0, 0, math.min(#Options * 35, 175))}, 0.3, Enum.EasingStyle.Quad)
+                    Tween(Arrow, {Rotation = 180}, 0.2)
                 else
                     Tween(DropdownContainer, {Size = UDim2.new(1, 0, 0, 0)}, 0.2)
+                    Tween(Arrow, {Rotation = 0}, 0.2)
                     wait(0.2)
                     DropdownContainer.Visible = false
-                    Arrow.Text = "▼"
                 end
             end)
         end
         
-        -- Create Input
         function Tab:CreateInput(inputConfig)
             inputConfig = inputConfig or {}
             local InputName = inputConfig.Name or "Input"
@@ -701,33 +994,33 @@ function LunaUI:CreateWindow(config)
             local Callback = inputConfig.Callback or function() end
             
             local InputFrame = CreateInstance("Frame", {
-                Size = UDim2.new(1, 0, 0, 35),
+                Size = UDim2.new(1, 0, 0, 40),
                 BackgroundColor3 = Theme.Surface,
                 BorderSizePixel = 0,
                 Parent = TabContent,
             })
             
             CreateInstance("UICorner", {
-                CornerRadius = UDim.new(0, 6),
+                CornerRadius = UDim.new(0, 8),
                 Parent = InputFrame,
             })
             
             local InputLabel = CreateInstance("TextLabel", {
-                Size = UDim2.new(0, 100, 1, 0),
-                Position = UDim2.new(0, 10, 0, 0),
+                Size = UDim2.new(0, 120, 1, 0),
+                Position = UDim2.new(0, 15, 0, 0),
                 BackgroundTransparency = 1,
                 Text = InputName .. ":",
                 TextColor3 = Theme.Text,
                 TextSize = 14,
-                Font = Enum.Font.Gotham,
+                Font = Enum.Font.GothamMedium,
                 TextXAlignment = Enum.TextXAlignment.Left,
                 Parent = InputFrame,
             })
             
             local InputBox = CreateInstance("TextBox", {
-                Size = UDim2.new(1, -120, 1, -10),
-                Position = UDim2.new(0, 110, 0, 5),
-                BackgroundColor3 = Theme.Background,
+                Size = UDim2.new(1, -145, 0, 28),
+                Position = UDim2.new(0, 135, 0, 6),
+                BackgroundColor3 = Theme.Hover,
                 BorderSizePixel = 0,
                 Text = "",
                 PlaceholderText = Placeholder,
@@ -741,27 +1034,66 @@ function LunaUI:CreateWindow(config)
             })
             
             CreateInstance("UICorner", {
-                CornerRadius = UDim.new(0, 4),
+                CornerRadius = UDim.new(0, 6),
                 Parent = InputBox,
             })
             
             CreateInstance("UIPadding", {
-                PaddingLeft = UDim.new(0, 8),
-                PaddingRight = UDim.new(0, 8),
+                PaddingLeft = UDim.new(0, 10),
+                PaddingRight = UDim.new(0, 10),
                 Parent = InputBox,
             })
             
+            InputBox.Focused:Connect(function()
+                Tween(InputBox, {BackgroundColor3 = Theme.Primary}, 0.2)
+            end)
+            
             InputBox.FocusLost:Connect(function(enterPressed)
+                Tween(InputBox, {BackgroundColor3 = Theme.Hover}, 0.2)
                 if enterPressed then
                     Callback(InputBox.Text)
                 end
             end)
         end
         
+        function Tab:CreateImage(imageConfig)
+            imageConfig = imageConfig or {}
+            local ImageId = imageConfig.Image or "rbxassetid://7733674731"
+            local ImageSize = imageConfig.Size or UDim2.new(1, 0, 0, 150)
+            
+            local ImageFrame = CreateInstance("Frame", {
+                Size = ImageSize,
+                BackgroundColor3 = Theme.Surface,
+                BorderSizePixel = 0,
+                Parent = TabContent,
+            })
+            
+            CreateInstance("UICorner", {
+                CornerRadius = UDim.new(0, 8),
+                Parent = ImageFrame,
+            })
+            
+            local Image = CreateInstance("ImageLabel", {
+                Size = UDim2.new(1, -10, 1, -10),
+                Position = UDim2.new(0, 5, 0, 5),
+                BackgroundTransparency = 1,
+                Image = ImageId,
+                ScaleType = Enum.ScaleType.Fit,
+                Parent = ImageFrame,
+            })
+            
+            CreateInstance("UICorner", {
+                CornerRadius = UDim.new(0, 6),
+                Parent = Image,
+            })
+        end
+        
         return Tab
     end
     
     -- Notification System
+    local notificationQueue = {}
+    
     function Window:Notify(notifConfig)
         notifConfig = notifConfig or {}
         local Title = notifConfig.Title or "Notification"
@@ -777,62 +1109,80 @@ function LunaUI:CreateWindow(config)
         }
         
         local NotifFrame = CreateInstance("Frame", {
-            Size = UDim2.new(0, 300, 0, 70),
-            Position = UDim2.new(1, -320, 1, -90),
+            Size = UDim2.new(0, 0, 0, 0),
+            Position = UDim2.new(1, -20, 1, -100 - (#notificationQueue * 90)),
+            AnchorPoint = Vector2.new(1, 0),
             BackgroundColor3 = Theme.Surface,
             BorderSizePixel = 0,
             Parent = ScreenGui,
         })
         
         CreateInstance("UICorner", {
-            CornerRadius = UDim.new(0, 6),
+            CornerRadius = UDim.new(0, 8),
+            Parent = NotifFrame,
+        })
+        
+        CreateInstance("UIStroke", {
+            Color = typeColors[Type] or Theme.Primary,
+            Thickness = 2,
             Parent = NotifFrame,
         })
         
         local Accent = CreateInstance("Frame", {
-            Size = UDim2.new(0, 4, 1, 0),
+            Size = UDim2.new(0, 5, 1, 0),
             BackgroundColor3 = typeColors[Type] or Theme.Primary,
             BorderSizePixel = 0,
             Parent = NotifFrame,
         })
         
         CreateInstance("UICorner", {
-            CornerRadius = UDim.new(0, 6),
+            CornerRadius = UDim.new(0, 8),
             Parent = Accent,
         })
         
         local NotifTitle = CreateInstance("TextLabel", {
-            Size = UDim2.new(1, -20, 0, 20),
-            Position = UDim2.new(0, 15, 0, 10),
+            Size = UDim2.new(1, -25, 0, 22),
+            Position = UDim2.new(0, 18, 0, 10),
             BackgroundTransparency = 1,
             Text = Title,
             TextColor3 = Theme.Text,
-            TextSize = 14,
+            TextSize = 15,
             Font = Enum.Font.GothamBold,
             TextXAlignment = Enum.TextXAlignment.Left,
             Parent = NotifFrame,
         })
         
         local NotifContent = CreateInstance("TextLabel", {
-            Size = UDim2.new(1, -20, 0, 30),
-            Position = UDim2.new(0, 15, 0, 30),
+            Size = UDim2.new(1, -25, 0, 35),
+            Position = UDim2.new(0, 18, 0, 32),
             BackgroundTransparency = 1,
             Text = Content,
             TextColor3 = Theme.TextDim,
-            TextSize = 12,
+            TextSize = 13,
             Font = Enum.Font.Gotham,
             TextXAlignment = Enum.TextXAlignment.Left,
             TextWrapped = true,
             Parent = NotifFrame,
         })
         
-        Tween(NotifFrame, {Position = UDim2.new(1, -320, 1, -90 - (#ScreenGui:GetChildren() - 2) * 80)}, 0.3)
+        table.insert(notificationQueue, NotifFrame)
+        
+        -- Animate in
+        Tween(NotifFrame, {Size = UDim2.new(0, 320, 0, 75)}, 0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
         
         task.wait(Duration)
         
-        Tween(NotifFrame, {Position = UDim2.new(1, 20, 1, -90 - (#ScreenGui:GetChildren() - 2) * 80)}, 0.3)
+        -- Animate out
+        Tween(NotifFrame, {Position = UDim2.new(1, 20, 1, -100 - (#notificationQueue * 90))}, 0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
         task.wait(0.3)
         NotifFrame:Destroy()
+        
+        for i, notif in ipairs(notificationQueue) do
+            if notif == NotifFrame then
+                table.remove(notificationQueue, i)
+                break
+            end
+        end
     end
     
     return Window
