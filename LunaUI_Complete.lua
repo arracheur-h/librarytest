@@ -566,7 +566,6 @@ function LunaUI:CreateWindow(config)
     spawn(function()
         -- Phase 1: Logo appears
         Tween(LoadingLogo, {TextSize = 72}, 0.8, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
-        Tween(LogoShadow, {TextSize = 72}, 0.8, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
         
         wait(0.5)
         
@@ -611,7 +610,6 @@ function LunaUI:CreateWindow(config)
         -- Phase 5: Fade out everything
         Tween(LoadingFrame, {BackgroundTransparency = 1}, 0.5)
         Tween(LoadingLogo, {TextTransparency = 1}, 0.5)
-        Tween(LogoShadow, {TextTransparency = 1}, 0.5)
         Tween(SubtitleText, {TextTransparency = 1}, 0.5)
         Tween(StatusText, {TextTransparency = 1}, 0.5)
         Tween(PercentText, {TextTransparency = 1}, 0.5)
