@@ -156,46 +156,116 @@ function LunaUI:CreateWindow(config)
         ResetOnSpawn = false,
     })
     
-    -- Loading Screen
+    -- Loading Screen with Better Animation
     local LoadingFrame = CreateInstance("Frame", {
         Name = "LoadingFrame",
         Size = UDim2.new(1, 0, 1, 0),
-        BackgroundColor3 = Theme.Background,
+        BackgroundColor3 = Color3.fromRGB(0, 0, 0),
         BorderSizePixel = 0,
         ZIndex = 100,
         Parent = ScreenGui,
     })
     
-    local LoadingLogo = CreateInstance("TextLabel", {
-        Size = UDim2.new(0, 200, 0, 60),
-        Position = UDim2.new(0.5, -100, 0.5, -80),
+    -- Animated gradient background
+    local Gradient = CreateInstance("UIGradient", {
+        Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(88, 101, 242)),
+            ColorSequenceKeypoint.new(0.5, Color3.fromRGB(139, 92, 246)),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(219, 39, 119)),
+        }),
+        Rotation = 45,
+        Parent = LoadingFrame,
+    })
+    
+    -- Rotate gradient for effect
+    spawn(function()
+        while LoadingFrame.Parent do
+            Tween(Gradient, {Rotation = Gradient.Rotation + 360}, 3, Enum.EasingStyle.Linear)
+            wait(3)
+        end
+    end)
+    
+    -- Logo container
+    local LogoContainer = CreateInstance("Frame", {
+        Size = UDim2.new(0, 400, 0, 250),
+        Position = UDim2.new(0.5, -200, 0.5, -125),
         BackgroundTransparency = 1,
-        Text = "3xt4sy",
-        TextColor3 = Theme.Primary,
-        TextSize = 48,
+        Parent = LoadingFrame,
+    })
+    
+    -- Main logo text
+    local LoadingLogo = CreateInstance("TextLabel", {
+        Size = UDim2.new(1, 0, 0, 80),
+        Position = UDim2.new(0, 0, 0, 0),
+        BackgroundTransparency = 1,
+        Text = "3XT4SY",
+        TextColor3 = Color3.fromRGB(255, 255, 255),
+        TextSize = 56,
         Font = Enum.Font.GothamBold,
         TextTransparency = 1,
-        Parent = LoadingFrame,
+        Parent = LogoContainer,
     })
     
-    local LoadingText = CreateInstance("TextLabel", {
-        Size = UDim2.new(0, 300, 0, 30),
-        Position = UDim2.new(0.5, -150, 0.5, 0),
+    -- Glow effect
+    local LogoGlow = CreateInstance("ImageLabel", {
+        Size = UDim2.new(1, 50, 0, 130),
+        Position = UDim2.new(0, -25, 0, -25),
         BackgroundTransparency = 1,
-        Text = "Loading interface...",
-        TextColor3 = Theme.Text,
-        TextSize = 14,
+        Image = "rbxassetid://5554236805",
+        ImageColor3 = Color3.fromRGB(88, 101, 242),
+        ImageTransparency = 0.5,
+        ScaleType = Enum.ScaleType.Slice,
+        SliceCenter = Rect.new(23, 23, 277, 277),
+        ZIndex = -1,
+        Parent = LoadingLogo,
+    })
+    
+    -- Welcome text
+    local WelcomeText = CreateInstance("TextLabel", {
+        Size = UDim2.new(1, 0, 0, 30),
+        Position = UDim2.new(0, 0, 0, 90),
+        BackgroundTransparency = 1,
+        Text = "Welcome in 3xt4sy hub",
+        TextColor3 = Color3.fromRGB(255, 255, 255),
+        TextSize = 20,
+        Font = Enum.Font.GothamMedium,
+        TextTransparency = 1,
+        Parent = LogoContainer,
+    })
+    
+    -- Credits
+    local CreditsText = CreateInstance("TextLabel", {
+        Size = UDim2.new(1, 0, 0, 25),
+        Position = UDim2.new(0, 0, 0, 125),
+        BackgroundTransparency = 1,
+        Text = "by 3xt4sy and 27azerty",
+        TextColor3 = Color3.fromRGB(200, 200, 255),
+        TextSize = 16,
         Font = Enum.Font.Gotham,
         TextTransparency = 1,
-        Parent = LoadingFrame,
+        Parent = LogoContainer,
     })
     
-    local LoadingBar = CreateInstance("Frame", {
-        Size = UDim2.new(0, 0, 0, 3),
-        Position = UDim2.new(0.5, -150, 0.5, 40),
-        BackgroundColor3 = Theme.Primary,
+    -- Loading bar background
+    local LoadingBarBG = CreateInstance("Frame", {
+        Size = UDim2.new(0, 350, 0, 4),
+        Position = UDim2.new(0, 25, 0, 180),
+        BackgroundColor3 = Color3.fromRGB(50, 50, 50),
         BorderSizePixel = 0,
-        Parent = LoadingFrame,
+        Parent = LogoContainer,
+    })
+    
+    CreateInstance("UICorner", {
+        CornerRadius = UDim.new(1, 0),
+        Parent = LoadingBarBG,
+    })
+    
+    -- Loading bar fill
+    local LoadingBar = CreateInstance("Frame", {
+        Size = UDim2.new(0, 0, 1, 0),
+        BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+        BorderSizePixel = 0,
+        Parent = LoadingBarBG,
     })
     
     CreateInstance("UICorner", {
@@ -203,18 +273,66 @@ function LunaUI:CreateWindow(config)
         Parent = LoadingBar,
     })
     
-    -- Animate loading
+    local LoadingBarGradient = CreateInstance("UIGradient", {
+        Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(88, 101, 242)),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(219, 39, 119)),
+        }),
+        Parent = LoadingBar,
+    })
+    
+    -- Loading percentage
+    local LoadingPercent = CreateInstance("TextLabel", {
+        Size = UDim2.new(1, 0, 0, 20),
+        Position = UDim2.new(0, 0, 0, 195),
+        BackgroundTransparency = 1,
+        Text = "0%",
+        TextColor3 = Color3.fromRGB(255, 255, 255),
+        TextSize = 14,
+        Font = Enum.Font.GothamBold,
+        TextTransparency = 1,
+        Parent = LogoContainer,
+    })
+    
+    -- Animate loading with better sequence
     spawn(function()
-        Tween(LoadingLogo, {TextTransparency = 0}, 0.5, Enum.EasingStyle.Quad)
+        -- Fade in logo with bounce
+        Tween(LoadingLogo, {TextTransparency = 0}, 0.6, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
+        Tween(LoadingLogo, {TextSize = 56}, 0.6, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
+        
+        wait(0.4)
+        
+        -- Fade in welcome text
+        Tween(WelcomeText, {TextTransparency = 0}, 0.5, Enum.EasingStyle.Quad)
+        
         wait(0.3)
-        Tween(LoadingText, {TextTransparency = 0}, 0.5, Enum.EasingStyle.Quad)
-        wait(0.2)
-        Tween(LoadingBar, {Size = UDim2.new(0, 300, 0, 3)}, 1.5, Enum.EasingStyle.Quad)
-        wait(1.5)
+        
+        -- Fade in credits
+        Tween(CreditsText, {TextTransparency = 0}, 0.5, Enum.EasingStyle.Quad)
+        
+        wait(0.3)
+        
+        -- Fade in loading bar
+        Tween(LoadingPercent, {TextTransparency = 0}, 0.3)
+        
+        -- Animate loading bar
+        for i = 0, 100, 2 do
+            LoadingBar.Size = UDim2.new(i/100, 0, 1, 0)
+            LoadingPercent.Text = i .. "%"
+            wait(0.02)
+        end
+        
+        wait(0.3)
+        
+        -- Fade out everything
         Tween(LoadingFrame, {BackgroundTransparency = 1}, 0.5)
         Tween(LoadingLogo, {TextTransparency = 1}, 0.5)
-        Tween(LoadingText, {TextTransparency = 1}, 0.5)
+        Tween(WelcomeText, {TextTransparency = 1}, 0.5)
+        Tween(CreditsText, {TextTransparency = 1}, 0.5)
+        Tween(LoadingPercent, {TextTransparency = 1}, 0.5)
         Tween(LoadingBar, {BackgroundTransparency = 1}, 0.5)
+        Tween(LoadingBarBG, {BackgroundTransparency = 1}, 0.5)
+        
         wait(0.5)
         LoadingFrame:Destroy()
     end)
