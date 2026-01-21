@@ -287,7 +287,7 @@ function LunaUI:CreateWindow(config)
         ResetOnSpawn = false,
     })
     
-    -- ULTRA SIMPLE LOADING
+    -- ULTRA SIMPLE LOADING WITH SMOOTH COLOR
     local LoadingFrame = CreateInstance("Frame", {
         Name = "LoadingFrame",
         Size = UDim2.new(1, 0, 1, 0),
@@ -305,7 +305,7 @@ function LunaUI:CreateWindow(config)
         Parent = LoadingFrame,
     })
     
-    -- Logo text (color changing)
+    -- Logo text (smooth color changing)
     local Logo = CreateInstance("TextLabel", {
         Size = UDim2.new(1, 0, 0, 70),
         BackgroundTransparency = 1,
@@ -359,22 +359,42 @@ function LunaUI:CreateWindow(config)
     })
     CreateInstance("UICorner", {CornerRadius = UDim.new(1, 0), Parent = Bar})
     
+    -- Smooth color interpolation function
+    local function lerpColor(c1, c2, alpha)
+        return Color3.new(
+            c1.R + (c2.R - c1.R) * alpha,
+            c1.G + (c2.G - c1.G) * alpha,
+            c1.B + (c2.B - c1.B) * alpha
+        )
+    end
+    
     -- Animation
     spawn(function()
-        -- Color changing loop
+        -- Smooth color changing loop
         spawn(function()
             local colors = {
-                Color3.fromRGB(88, 101, 242),
-                Color3.fromRGB(139, 92, 246),
-                Color3.fromRGB(219, 39, 119),
-                Color3.fromRGB(236, 72, 153),
+                Color3.fromRGB(88, 101, 242),   -- Blue
+                Color3.fromRGB(139, 92, 246),   -- Purple
+                Color3.fromRGB(219, 39, 119),   -- Pink
+                Color3.fromRGB(236, 72, 153),   -- Light Pink
             }
-            local index = 1
+            
+            local currentIndex = 1
+            local nextIndex = 2
+            
             while Logo.Parent do
-                Logo.TextColor3 = colors[index]
-                index = index + 1
-                if index > #colors then index = 1 end
-                wait(0.3)
+                -- Smooth transition between colors
+                for i = 0, 100 do
+                    if not Logo.Parent then break end
+                    local alpha = i / 100
+                    Logo.TextColor3 = lerpColor(colors[currentIndex], colors[nextIndex], alpha)
+                    wait(0.01)
+                end
+                
+                -- Move to next color
+                currentIndex = nextIndex
+                nextIndex = nextIndex + 1
+                if nextIndex > #colors then nextIndex = 1 end
             end
         end)
         
