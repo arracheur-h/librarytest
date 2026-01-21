@@ -287,7 +287,7 @@ function LunaUI:CreateWindow(config)
         ResetOnSpawn = false,
     })
     
-    -- SIMPLE WORKING LOADING SCREEN
+    -- ULTRA SIMPLE LOADING
     local LoadingFrame = CreateInstance("Frame", {
         Name = "LoadingFrame",
         Size = UDim2.new(1, 0, 1, 0),
@@ -297,70 +297,60 @@ function LunaUI:CreateWindow(config)
         Parent = ScreenGui,
     })
     
-    -- Stars
-    for i = 1, 50 do
-        local Star = CreateInstance("Frame", {
-            Size = UDim2.new(0, math.random(2, 6), 0, math.random(2, 6)),
-            Position = UDim2.new(math.random(0, 100) / 100, 0, math.random(0, 100) / 100, 0),
-            BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-            BackgroundTransparency = math.random(0, 50) / 100,
-            BorderSizePixel = 0,
-            Parent = LoadingFrame,
-        })
-        CreateInstance("UICorner", {CornerRadius = UDim.new(1, 0), Parent = Star})
-    end
-    
     -- Container
     local Container = CreateInstance("Frame", {
-        Size = UDim2.new(0, 500, 0, 250),
-        Position = UDim2.new(0.5, -250, 0.5, -125),
+        Size = UDim2.new(0, 500, 0, 200),
+        Position = UDim2.new(0.5, -250, 0.5, -100),
         BackgroundTransparency = 1,
         Parent = LoadingFrame,
     })
     
-    -- Logo
+    -- Logo text (color changing)
     local Logo = CreateInstance("TextLabel", {
-        Size = UDim2.new(1, 0, 0, 80),
+        Size = UDim2.new(1, 0, 0, 70),
         BackgroundTransparency = 1,
         Text = "3XT4SY",
-        TextColor3 = Color3.fromRGB(255, 255, 255),
-        TextSize = 0,
+        TextColor3 = Color3.fromRGB(88, 101, 242),
+        TextSize = 64,
         Font = Enum.Font.GothamBold,
         Parent = Container,
     })
     
-    local LogoGrad = CreateInstance("UIGradient", {
-        Color = ColorSequence.new({
-            ColorSequenceKeypoint.new(0, Color3.fromRGB(88, 101, 242)),
-            ColorSequenceKeypoint.new(1, Color3.fromRGB(219, 39, 119)),
-        }),
-        Parent = Logo,
-    })
-    
-    -- Subtitle
-    local Sub = CreateInstance("TextLabel", {
-        Size = UDim2.new(1, 0, 0, 30),
-        Position = UDim2.new(0, 0, 0, 90),
+    -- Welcome text
+    local Welcome = CreateInstance("TextLabel", {
+        Size = UDim2.new(1, 0, 0, 25),
+        Position = UDim2.new(0, 0, 0, 75),
         BackgroundTransparency = 1,
-        Text = "by 3xt4sy and 27azerty",
-        TextColor3 = Color3.fromRGB(200, 200, 255),
+        Text = "Welcome in 3xt4sy HUB",
+        TextColor3 = Color3.fromRGB(200, 200, 200),
         TextSize = 16,
         Font = Enum.Font.Gotham,
-        TextTransparency = 1,
         Parent = Container,
     })
     
-    -- Bar BG
+    -- Credits
+    local Credits = CreateInstance("TextLabel", {
+        Size = UDim2.new(1, 0, 0, 20),
+        Position = UDim2.new(0, 0, 0, 105),
+        BackgroundTransparency = 1,
+        Text = "by 3xt4sy and 27azerty",
+        TextColor3 = Color3.fromRGB(150, 150, 150),
+        TextSize = 14,
+        Font = Enum.Font.Gotham,
+        Parent = Container,
+    })
+    
+    -- Loading bar background
     local BarBG = CreateInstance("Frame", {
-        Size = UDim2.new(0, 400, 0, 6),
+        Size = UDim2.new(0, 400, 0, 4),
         Position = UDim2.new(0, 50, 0, 150),
-        BackgroundColor3 = Color3.fromRGB(30, 30, 40),
+        BackgroundColor3 = Color3.fromRGB(40, 40, 40),
         BorderSizePixel = 0,
         Parent = Container,
     })
     CreateInstance("UICorner", {CornerRadius = UDim.new(1, 0), Parent = BarBG})
     
-    -- Bar
+    -- Loading bar
     local Bar = CreateInstance("Frame", {
         Size = UDim2.new(0, 0, 1, 0),
         BackgroundColor3 = Color3.fromRGB(88, 101, 242),
@@ -369,55 +359,43 @@ function LunaUI:CreateWindow(config)
     })
     CreateInstance("UICorner", {CornerRadius = UDim.new(1, 0), Parent = Bar})
     
-    -- Percent
-    local Percent = CreateInstance("TextLabel", {
-        Size = UDim2.new(1, 0, 0, 25),
-        Position = UDim2.new(0, 0, 0, 170),
-        BackgroundTransparency = 1,
-        Text = "0%",
-        TextColor3 = Color3.fromRGB(255, 255, 255),
-        TextSize = 16,
-        Font = Enum.Font.GothamBold,
-        TextTransparency = 1,
-        Parent = Container,
-    })
-    
     -- Animation
     spawn(function()
-        -- Logo grow
-        for i = 0, 72, 4 do
-            Logo.TextSize = i
+        -- Color changing loop
+        spawn(function()
+            local colors = {
+                Color3.fromRGB(88, 101, 242),
+                Color3.fromRGB(139, 92, 246),
+                Color3.fromRGB(219, 39, 119),
+                Color3.fromRGB(236, 72, 153),
+            }
+            local index = 1
+            while Logo.Parent do
+                Logo.TextColor3 = colors[index]
+                index = index + 1
+                if index > #colors then index = 1 end
+                wait(0.3)
+            end
+        end)
+        
+        -- Loading bar
+        for p = 0, 100, 1 do
+            Bar.Size = UDim2.new(p / 100, 0, 1, 0)
             wait(0.02)
         end
+        
         wait(0.3)
         
-        -- Subtitle
-        Sub.TextTransparency = 0
-        wait(0.3)
-        
-        -- Percent
-        Percent.TextTransparency = 0
-        wait(0.2)
-        
-        -- Loading
-        for p = 0, 100, 2 do
-            Bar.Size = UDim2.new(p / 100, 0, 1, 0)
-            Percent.Text = p .. "%"
-            wait(0.03)
-        end
-        
-        wait(0.5)
-        
-        -- Fadeout
+        -- Fade out
         for i = 0, 10 do
             local a = i / 10
             LoadingFrame.BackgroundTransparency = a
             Logo.TextTransparency = a
-            Sub.TextTransparency = a
-            Percent.TextTransparency = a
+            Welcome.TextTransparency = a
+            Credits.TextTransparency = a
             Bar.BackgroundTransparency = a
             BarBG.BackgroundTransparency = a
-            wait(0.05)
+            wait(0.03)
         end
         
         LoadingFrame:Destroy()
