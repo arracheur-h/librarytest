@@ -279,6 +279,7 @@ function LunaUI:CreateWindow(config)
     end
     
     -- Main ScreenGui
+
     local ScreenGui = CreateInstance("ScreenGui", {
         Name = "LunaUI",
         Parent = CoreGui,
@@ -286,7 +287,7 @@ function LunaUI:CreateWindow(config)
         ResetOnSpawn = false,
     })
     
-    -- ULTIMATE LOADING SCREEN
+    -- SIMPLE WORKING LOADING SCREEN
     local LoadingFrame = CreateInstance("Frame", {
         Name = "LoadingFrame",
         Size = UDim2.new(1, 0, 1, 0),
@@ -296,342 +297,133 @@ function LunaUI:CreateWindow(config)
         Parent = ScreenGui,
     })
     
-    -- Animated Stars Background
-    local StarsFrame = CreateInstance("Frame", {
-        Size = UDim2.new(1, 0, 1, 0),
-        BackgroundTransparency = 1,
-        Parent = LoadingFrame,
-    })
-    
-    -- Create 50 animated stars
+    -- Stars
     for i = 1, 50 do
-        local starSize = math.random(2, 6)
         local Star = CreateInstance("Frame", {
-            Size = UDim2.new(0, starSize, 0, starSize),
-            Position = UDim2.new(
-                math.random(0, 100) / 100,
-                math.random(-100, 100),
-                math.random(0, 100) / 100,
-                math.random(-100, 100)
-            ),
+            Size = UDim2.new(0, math.random(2, 6), 0, math.random(2, 6)),
+            Position = UDim2.new(math.random(0, 100) / 100, 0, math.random(0, 100) / 100, 0),
             BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-            BackgroundTransparency = math.random(0, 70) / 100,
+            BackgroundTransparency = math.random(0, 50) / 100,
             BorderSizePixel = 0,
-            Parent = StarsFrame,
+            Parent = LoadingFrame,
         })
-        
-        CreateInstance("UICorner", {
-            CornerRadius = UDim.new(1, 0),
-            Parent = Star,
-        })
-        
-        -- Animate stars randomly
-        spawn(function()
-            while Star.Parent do
-                local randomDuration = math.random(15, 35) / 10
-                local randomX = math.random(-100, 100)
-                local randomY = math.random(-100, 100)
-                local randomTransparency = math.random(0, 80) / 100
-                
-                Tween(Star, {
-                    Position = Star.Position + UDim2.new(0, randomX, 0, randomY),
-                    BackgroundTransparency = randomTransparency
-                }, randomDuration, Enum.EasingStyle.Sine)
-                
-                wait(randomDuration)
-            end
-        end)
+        CreateInstance("UICorner", {CornerRadius = UDim.new(1, 0), Parent = Star})
     end
     
-    -- Logo Container
-    local LogoContainer = CreateInstance("Frame", {
-        Size = UDim2.new(0, 500, 0, 300),
-        Position = UDim2.new(0.5, -250, 0.5, -150),
+    -- Container
+    local Container = CreateInstance("Frame", {
+        Size = UDim2.new(0, 500, 0, 250),
+        Position = UDim2.new(0.5, -250, 0.5, -125),
         BackgroundTransparency = 1,
         Parent = LoadingFrame,
     })
     
-    -- Glow Circle Effect
-    local GlowCircle = CreateInstance("ImageLabel", {
-        Size = UDim2.new(0, 200, 0, 200),
-        Position = UDim2.new(0.5, -100, 0, -50),
-        BackgroundTransparency = 1,
-        Image = "rbxassetid://5554236805",
-        ImageColor3 = Theme.Primary,
-        ImageTransparency = 0.3,
-        ScaleType = Enum.ScaleType.Slice,
-        SliceCenter = Rect.new(23, 23, 277, 277),
-        Parent = LogoContainer,
-    })
-    
-    -- Animate glow pulsing
-    spawn(function()
-        while GlowCircle.Parent do
-            Tween(GlowCircle, {ImageTransparency = 0.6, Size = UDim2.new(0, 230, 0, 230)}, 1, Enum.EasingStyle.Sine)
-            wait(1)
-            Tween(GlowCircle, {ImageTransparency = 0.3, Size = UDim2.new(0, 200, 0, 200)}, 1, Enum.EasingStyle.Sine)
-            wait(1)
-        end
-    end)
-    
-    -- Main Logo Shadow
-    local LogoShadow = CreateInstance("TextLabel", {
-        Size = UDim2.new(1, 0, 0, 100),
-        Position = UDim2.new(0, 5, 0, 5),
-        BackgroundTransparency = 1,
-        Text = "3XT4SY",
-        TextColor3 = Color3.fromRGB(0, 0, 0),
-        TextSize = 0,
-        Font = Enum.Font.GothamBold,
-        TextTransparency = 0.5,
-        ZIndex = 1,
-        Parent = LogoContainer,
-    })
-    
-    -- Main Logo
-    local LoadingLogo = CreateInstance("TextLabel", {
-        Size = UDim2.new(1, 0, 0, 100),
-        Position = UDim2.new(0, 0, 0, 0),
+    -- Logo
+    local Logo = CreateInstance("TextLabel", {
+        Size = UDim2.new(1, 0, 0, 80),
         BackgroundTransparency = 1,
         Text = "3XT4SY",
         TextColor3 = Color3.fromRGB(255, 255, 255),
         TextSize = 0,
         Font = Enum.Font.GothamBold,
-        ZIndex = 2,
-        Parent = LogoContainer,
+        Parent = Container,
     })
     
-    -- Rainbow Gradient on Logo
-    local LogoGradient = CreateInstance("UIGradient", {
+    local LogoGrad = CreateInstance("UIGradient", {
         Color = ColorSequence.new({
-            ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 102)),
-            ColorSequenceKeypoint.new(0.5, Color3.fromRGB(88, 101, 242)),
-            ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 255, 255)),
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(88, 101, 242)),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(219, 39, 119)),
         }),
-        Parent = LoadingLogo,
+        Parent = Logo,
     })
-    
-    -- Animate gradient rotation
-    spawn(function()
-        while LogoGradient.Parent do
-            Tween(LogoGradient, {Rotation = LogoGradient.Rotation + 360}, 3, Enum.EasingStyle.Linear)
-            wait(3)
-        end
-    end)
     
     -- Subtitle
-    local SubtitleText = CreateInstance("TextLabel", {
+    local Sub = CreateInstance("TextLabel", {
         Size = UDim2.new(1, 0, 0, 30),
-        Position = UDim2.new(0, 0, 0, 110),
+        Position = UDim2.new(0, 0, 0, 90),
         BackgroundTransparency = 1,
         Text = "by 3xt4sy and 27azerty",
-        TextColor3 = Color3.fromRGB(200, 200, 200),
-        TextSize = 18,
+        TextColor3 = Color3.fromRGB(200, 200, 255),
+        TextSize = 16,
         Font = Enum.Font.Gotham,
         TextTransparency = 1,
-        Parent = LogoContainer,
+        Parent = Container,
     })
     
-    -- Loading Status Text
-    local StatusText = CreateInstance("TextLabel", {
-        Size = UDim2.new(1, 0, 0, 25),
-        Position = UDim2.new(0, 0, 0, 150),
-        BackgroundTransparency = 1,
-        Text = "Initializing...",
-        TextColor3 = Color3.fromRGB(150, 150, 150),
-        TextSize = 14,
-        Font = Enum.Font.Gotham,
-        TextTransparency = 1,
-        Parent = LogoContainer,
-    })
-    
-    -- Loading Bar Background
-    local LoadingBarBG = CreateInstance("Frame", {
+    -- Bar BG
+    local BarBG = CreateInstance("Frame", {
         Size = UDim2.new(0, 400, 0, 6),
-        Position = UDim2.new(0, 50, 0, 190),
-        BackgroundColor3 = Color3.fromRGB(30, 30, 30),
+        Position = UDim2.new(0, 50, 0, 150),
+        BackgroundColor3 = Color3.fromRGB(30, 30, 40),
         BorderSizePixel = 0,
-        Parent = LogoContainer,
+        Parent = Container,
     })
+    CreateInstance("UICorner", {CornerRadius = UDim.new(1, 0), Parent = BarBG})
     
-    CreateInstance("UICorner", {
-        CornerRadius = UDim.new(1, 0),
-        Parent = LoadingBarBG,
-    })
-    
-    -- Loading Bar Fill (Color Changing)
-    local LoadingBar = CreateInstance("Frame", {
+    -- Bar
+    local Bar = CreateInstance("Frame", {
         Size = UDim2.new(0, 0, 1, 0),
-        BackgroundColor3 = Color3.fromRGB(255, 0, 102),
+        BackgroundColor3 = Color3.fromRGB(88, 101, 242),
         BorderSizePixel = 0,
-        Parent = LoadingBarBG,
+        Parent = BarBG,
     })
+    CreateInstance("UICorner", {CornerRadius = UDim.new(1, 0), Parent = Bar})
     
-    CreateInstance("UICorner", {
-        CornerRadius = UDim.new(1, 0),
-        Parent = LoadingBar,
-    })
-    
-    -- Gradient on loading bar
-    local BarGradient = CreateInstance("UIGradient", {
-        Color = ColorSequence.new({
-            ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 102)),
-            ColorSequenceKeypoint.new(0.5, Color3.fromRGB(88, 101, 242)),
-            ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 255, 255)),
-        }),
-        Parent = LoadingBar,
-    })
-    
-    -- Animate gradient on bar
-    spawn(function()
-        while BarGradient.Parent do
-            Tween(BarGradient, {Rotation = BarGradient.Rotation + 360}, 2, Enum.EasingStyle.Linear)
-            wait(2)
-        end
-    end)
-    
-    -- Glow effect on bar
-    local BarGlow = CreateInstance("ImageLabel", {
-        Size = UDim2.new(1, 20, 1, 20),
-        Position = UDim2.new(0, -10, 0, -10),
-        BackgroundTransparency = 1,
-        Image = "rbxassetid://5554236805",
-        ImageColor3 = Color3.fromRGB(88, 101, 242),
-        ImageTransparency = 0.5,
-        ScaleType = Enum.ScaleType.Slice,
-        SliceCenter = Rect.new(23, 23, 277, 277),
-        Parent = LoadingBar,
-    })
-    
-    -- Percentage Text
-    local PercentText = CreateInstance("TextLabel", {
+    -- Percent
+    local Percent = CreateInstance("TextLabel", {
         Size = UDim2.new(1, 0, 0, 25),
-        Position = UDim2.new(0, 0, 0, 205),
+        Position = UDim2.new(0, 0, 0, 170),
         BackgroundTransparency = 1,
         Text = "0%",
         TextColor3 = Color3.fromRGB(255, 255, 255),
         TextSize = 16,
         Font = Enum.Font.GothamBold,
         TextTransparency = 1,
-        Parent = LogoContainer,
+        Parent = Container,
     })
     
-    -- Spinning Circle Loader
-    local SpinnerContainer = CreateInstance("Frame", {
-        Size = UDim2.new(0, 40, 0, 40),
-        Position = UDim2.new(0.5, -20, 0, 240),
-        BackgroundTransparency = 1,
-        Parent = LogoContainer,
-    })
-    
-    for i = 1, 8 do
-        local dot = CreateInstance("Frame", {
-            Size = UDim2.new(0, 6, 0, 6),
-            Position = UDim2.new(0.5, -3, 0, 0),
-            AnchorPoint = Vector2.new(0.5, 0),
-            BackgroundColor3 = Color3.fromRGB(88, 101, 242),
-            BackgroundTransparency = (i - 1) / 8,
-            BorderSizePixel = 0,
-            Parent = SpinnerContainer,
-        })
-        
-        CreateInstance("UICorner", {
-            CornerRadius = UDim.new(1, 0),
-            Parent = dot,
-        })
-        
-        dot.Rotation = (i - 1) * 45
-        
-        local offset = CreateInstance("Frame", {
-            Size = UDim2.new(1, 0, 1, 0),
-            BackgroundTransparency = 1,
-            Parent = dot,
-        })
-        
-        CreateInstance("UIPadding", {
-            PaddingTop = UDim.new(0, -15),
-            Parent = offset,
-        })
-    end
-    
-    -- Spin the loader
+    -- Animation
     spawn(function()
-        while SpinnerContainer.Parent do
-            Tween(SpinnerContainer, {Rotation = SpinnerContainer.Rotation + 360}, 1, Enum.EasingStyle.Linear)
-            wait(1)
+        -- Logo grow
+        for i = 0, 72, 4 do
+            Logo.TextSize = i
+            wait(0.02)
         end
-    end)
-    
-    -- LOADING ANIMATION SEQUENCE
-    spawn(function()
-        -- Phase 1: Logo appears
-        Tween(LoadingLogo, {TextSize = 72}, 0.8, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
-        
-        wait(0.5)
-        
-        -- Phase 2: Subtitle fades in
-        Tween(SubtitleText, {TextTransparency = 0}, 0.5)
-        
         wait(0.3)
         
-        -- Phase 3: Status and percentage appear
-        Tween(StatusText, {TextTransparency = 0}, 0.4)
-        Tween(PercentText, {TextTransparency = 0}, 0.4)
+        -- Subtitle
+        Sub.TextTransparency = 0
+        wait(0.3)
         
+        -- Percent
+        Percent.TextTransparency = 0
         wait(0.2)
         
-        -- Phase 4: Loading bar animation with status updates
-        local statuses = {
-            {text = "Loading resources...", percent = 20},
-            {text = "Initializing components...", percent = 40},
-            {text = "Loading themes...", percent = 60},
-            {text = "Preparing interface...", percent = 80},
-            {text = "Almost ready...", percent = 95},
-            {text = "Complete!", percent = 100},
-        }
-        
-        for _, status in ipairs(statuses) do
-            StatusText.Text = status.text
-            
-            -- Animate loading bar
-            local barTween = Tween(LoadingBar, {Size = UDim2.new(status.percent / 100, 0, 1, 0)}, 0.5, Enum.EasingStyle.Quad)
-            
-            -- Animate percentage counting
-            local currentPercent = tonumber(PercentText.Text:gsub("%%", "")) or 0
-            local step = math.max(1, math.floor((status.percent - currentPercent) / 25))
-            
-            for p = currentPercent, status.percent, step do
-                PercentText.Text = p .. "%"
-                wait(0.5 / math.max(1, (status.percent - currentPercent) / step))
-            end
-            PercentText.Text = status.percent .. "%"
-            
-            wait(0.3)
-        end
-        
-        wait(0.3)
-        
-        -- Phase 5: Fade out everything
-        Tween(LoadingFrame, {BackgroundTransparency = 1}, 0.5)
-        Tween(LoadingLogo, {TextTransparency = 1}, 0.5)
-        Tween(SubtitleText, {TextTransparency = 1}, 0.5)
-        Tween(StatusText, {TextTransparency = 1}, 0.5)
-        Tween(PercentText, {TextTransparency = 1}, 0.5)
-        Tween(LoadingBar, {BackgroundTransparency = 1}, 0.5)
-        Tween(LoadingBarBG, {BackgroundTransparency = 1}, 0.5)
-        Tween(GlowCircle, {ImageTransparency = 1}, 0.5)
-        Tween(BarGlow, {ImageTransparency = 1}, 0.5)
-        Tween(SpinnerContainer, {BackgroundTransparency = 1}, 0.5)
-        
-        for _, star in pairs(StarsFrame:GetChildren()) do
-            Tween(star, {BackgroundTransparency = 1}, 0.5)
+        -- Loading
+        for p = 0, 100, 2 do
+            Bar.Size = UDim2.new(p / 100, 0, 1, 0)
+            Percent.Text = p .. "%"
+            wait(0.03)
         end
         
         wait(0.5)
+        
+        -- Fadeout
+        for i = 0, 10 do
+            local a = i / 10
+            LoadingFrame.BackgroundTransparency = a
+            Logo.TextTransparency = a
+            Sub.TextTransparency = a
+            Percent.TextTransparency = a
+            Bar.BackgroundTransparency = a
+            BarBG.BackgroundTransparency = a
+            wait(0.05)
+        end
+        
         LoadingFrame:Destroy()
     end)
-    
-    -- Main Container with transparency
+
+        -- Main Container with transparency
     local MainFrame = CreateInstance("Frame", {
         Name = "MainFrame",
         Size = UDim2.new(0, 0, 0, 0),
