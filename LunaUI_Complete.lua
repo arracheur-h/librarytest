@@ -592,17 +592,21 @@ function LunaUI:CreateWindow(config)
         
         for _, status in ipairs(statuses) do
             StatusText.Text = status.text
-            Tween(LoadingBar, {Size = UDim2.new(status.percent / 100, 0, 1, 0)}, 0.3, Enum.EasingStyle.Quad)
+            
+            -- Animate loading bar
+            local barTween = Tween(LoadingBar, {Size = UDim2.new(status.percent / 100, 0, 1, 0)}, 0.5, Enum.EasingStyle.Quad)
             
             -- Animate percentage counting
             local currentPercent = tonumber(PercentText.Text:gsub("%%", "")) or 0
-            for p = currentPercent, status.percent, 2 do
+            local step = math.max(1, math.floor((status.percent - currentPercent) / 25))
+            
+            for p = currentPercent, status.percent, step do
                 PercentText.Text = p .. "%"
-                wait(0.02)
+                wait(0.5 / math.max(1, (status.percent - currentPercent) / step))
             end
             PercentText.Text = status.percent .. "%"
             
-            wait(0.15)
+            wait(0.3)
         end
         
         wait(0.3)
